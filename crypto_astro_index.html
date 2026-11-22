@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crypto Astro Pro Terminal [BTCUSD & ETHUSD] — Jagannatha Hora + KP + Tithi Ashtottari Engine</title>
+<style>
+  :root {
+    --bg-main: #090d16; --bg-card: #111726; --bg-sub: #172033; --bg-hover: #1f2b44;
+    --text-main: #f1f5f9; --text-muted: #94a3b8; --border-col: #253147;
+    --accent: #38bdf8; --blue: #3b82f6;
+    --green-bg: rgba(16, 185, 129, 0.14); --green-txt: #34d399; --green-bdr: rgba(16, 185, 129, 0.4);
+    --red-bg: rgba(239, 68, 68, 0.14); --red-txt: #f87171; --red-bdr: rgba(239, 68, 68, 0.4);
+    --amber-bg: rgba(245, 158, 11, 0.14); --amber-txt: #fbbf24; --amber-bdr: rgba(245, 158, 11, 0.4);
+    --purple-bg: rgba(168, 85, 247, 0.16); --purple-txt: #d8b4fe; --purple-bdr: rgba(168, 85, 247, 0.45);
+    --cyan-bg: rgba(6, 182, 212, 0.15); --cyan-txt: #22d3ee; --cyan-bdr: rgba(6, 182, 212, 0.4);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+  [data-theme="light"] {
+    --bg-main: #f1f5f9; --bg-card: #ffffff; --bg-sub: #f8fafc; --bg-hover: #e2e8f0;
+    --text-main: #0f172a; --text-muted: #475569; --border-col: #cbd5e1;
+    --accent: #0284c7; --blue: #2563eb;
+    --green-bg: #dcfce7; --green-txt: #15803d; --green-bdr: #86efac;
+    --red-bg: #fee2e2; --red-txt: #b91c1c; --red-bdr: #fca5a5;
+    --amber-bg: #fef3c7; --amber-txt: #b45309; --amber-bdr: #fcd34d;
+    --purple-bg: #f3e8ff; --purple-txt: #7e22ce; --purple-bdr: #d8b4fe;
+    --cyan-bg: #cffafe; --cyan-txt: #0e7490; --cyan-bdr: #67e8f9;
+    --shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  body { background: var(--bg-main); color: var(--text-main); padding: 14px; line-height: 1.5; transition: 0.25s; }
+  .container { max-width: 1580px; margin: 0 auto; }
+
+  .topbar {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;
+    background: var(--bg-card); padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border-col);
+    border-left: 4px solid #f59e0b; box-shadow: var(--shadow); margin-bottom: 12px;
+  }
+  .brand h1 { font-size: 1.18rem; font-weight: 800; }
+  .brand h1 span { color: #f59e0b; }
+  .brand p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .exch-btn {
+    padding: 7px 13px; border-radius: 8px; border: 1px solid var(--border-col);
+    background: var(--bg-sub); color: var(--text-main); font-weight: 700; font-size: 0.84rem;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.15s;
+  }
+  .exch-btn.active { background: #f59e0b; color: #000; border-color: #f59e0b; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.open { background: #10b981; box-shadow: 0 0 6px #10b981; }
+
+  select, input[type="date"], input[type="time"], input[type="month"], input[type="text"], input[type="number"], .btn {
+    padding: 7px 11px; border-radius: 8px; border: 1px solid var(--border-col);
+    background: var(--bg-sub); color: var(--text-main); font-size: 0.83rem;
+  }
+  .btn-gold { background: #f59e0b; color: #000; font-weight: 700; border: none; cursor: pointer; }
+  .btn-green { background: #10b981; color: #000; font-weight: 700; border: none; cursor: pointer; }
+  .btn-red { background: #ef4444; color: #fff; font-weight: 700; border: none; cursor: pointer; }
+
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.73rem; font-weight: 700; border: 1px solid transparent; margin: 1px 2px; }
+  .b-green { background: var(--green-bg); color: var(--green-txt); border-color: var(--green-bdr); }
+  .b-red { background: var(--red-bg); color: var(--red-txt); border-color: var(--red-bdr); }
+  .b-amber { background: var(--amber-bg); color: var(--amber-txt); border-color: var(--amber-bdr); }
+  .b-purple { background: var(--purple-bg); color: var(--purple-txt); border-color: var(--purple-bdr); }
+  .b-cyan { background: var(--cyan-bg); color: var(--cyan-txt); border-color: var(--cyan-bdr); }
+  .b-sikka { background: linear-gradient(90deg, #fbbf24, #f59e0b, #10b981); color: #000; font-weight: 900; box-shadow: 0 0 10px rgba(245,158,11,0.5); }
+  .b-danger-lock { background: #ef4444; color: #fff; font-weight: 900; animation: pulse 1.3s infinite; }
+
+  .ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .rib-box { background: var(--bg-card); border: 1px solid var(--border-col); border-radius: 10px; padding: 10px 14px; box-shadow: var(--shadow); }
+  .rib-lbl { font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+  .rib-val { font-size: 0.95rem; font-weight: 700; margin-top: 3px; }
+  .rib-sub { font-size: 0.75rem; color: var(--accent); margin-top: 2px; }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border-col); border-radius: 12px; padding: 15px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .card-title { font-size: 1.0rem; font-weight: 800; margin-bottom: 11px; padding-bottom: 8px; border-bottom: 1px solid var(--border-col); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
+
+  .combo-hero { border: 2px solid #f59e0b; background: linear-gradient(145deg, var(--bg-card), var(--bg-sub)); }
+  .combo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(365px, 1fr)); gap: 12px; }
+  .combo-item {
+    background: var(--bg-card); border: 1px solid var(--border-col); border-radius: 10px;
+    padding: 12px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  }
+  .combo-item.sikka-gold {
+    border: 2.5px solid #fbbf24; border-left: 7px solid #10b981;
+    background: linear-gradient(155deg, rgba(245, 158, 11, 0.13), rgba(16, 185, 129, 0.08));
+    box-shadow: 0 0 22px rgba(245, 158, 11, 0.28);
+  }
+  .combo-item.observe-card {
+    border: 2px solid #38bdf8; border-left: 7px solid #38bdf8;
+    background: rgba(56, 189, 248, 0.08);
+  }
+  .combo-item.flop-danger {
+    border: 2px solid #ef4444; border-left: 7px solid #ef4444;
+    background: rgba(239, 68, 68, 0.08); opacity: 0.85;
+  }
+  .combo-item.mega { border-left: 5px solid #10b981; }
+  .combo-item.active-now { border: 2.5px solid #f59e0b; background: var(--amber-bg); opacity: 1; }
+  .combo-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .combo-time { font-size: 1.05rem; font-weight: 900; color: var(--text-main); }
+  .timer-pill {
+    font-family: 'Consolas', monospace; font-size: 0.84rem; font-weight: 800;
+    padding: 4px 10px; border-radius: 20px; background: var(--bg-sub); border: 1px solid #f59e0b; color: #fbbf24;
+  }
+  .timer-pill.live { background: #10b981; color: #000; border-color: #10b981; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.72; } }
+  .combo-body { font-size: 0.83rem; color: var(--text-main); line-height: 1.45; }
+  .hour-guard-box {
+    background: var(--bg-sub); border: 1px solid var(--border-col); border-radius: 7px;
+    padding: 7px 9px; font-size: 0.77rem; line-height: 1.45;
+  }
+  .combo-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1.15fr 1.35fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 12px; }
+  .veto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 9px; margin-bottom: 11px; }
+  .veto-box { background: var(--bg-sub); border: 1px solid var(--border-col); border-radius: 8px; padding: 9px 11px; }
+  .veto-box .v-title { font-size: 0.73rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+  .veto-box .v-stat { font-size: 0.88rem; font-weight: 800; margin-top: 3px; }
+  .veto-box .v-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .xray-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-bottom: 10px; }
+  .xray-item { background: var(--bg-sub); padding: 9px 11px; border-radius: 8px; border: 1px solid var(--border-col); }
+  .xray-item .lbl { font-size: 0.73rem; color: var(--text-muted); }
+  .xray-item .val { font-size: 0.94rem; font-weight: 700; margin-top: 2px; }
+  .kp-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .kp-node { flex: 1; min-width: 120px; background: var(--bg-sub); border: 1px solid var(--border-col); border-radius: 8px; padding: 8px; text-align: center; }
+  .kp-node .role { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; }
+  .kp-node .pl { font-size: 0.98rem; font-weight: 800; margin: 2px 0; }
+  .kp-node .st { font-size: 0.73rem; }
+
+  .brief-box { background: var(--bg-sub); border-left: 4px solid var(--blue); border-radius: 8px; padding: 11px 13px; margin-bottom: 11px; font-size: 0.88rem; }
+  .m-card { background: var(--bg-sub); border: 1px solid var(--border-col); border-radius: 8px; padding: 10px; }
+  .m-card h4 { font-size: 0.86rem; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .m-card p { font-size: 0.81rem; color: var(--text-muted); }
+
+  .table-wrap { overflow-x: auto; max-height: 620px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+  th { background: var(--bg-sub); color: var(--text-muted); font-weight: 700; text-align: left; padding: 9px 8px; position: sticky; top: 0; border-bottom: 1px solid var(--border-col); z-index: 2; white-space: nowrap; }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--border-col); vertical-align: middle; }
+  tr:hover td { background: var(--bg-hover); }
+  tr.active-row td { background: var(--amber-bg) !important; font-weight: 700; }
+  tr.rev-bull-row td { background: rgba(16, 185, 129, 0.14) !important; border-top: 1px solid rgba(16, 185, 129, 0.4); border-bottom: 1px solid rgba(16, 185, 129, 0.4); }
+  tr.rev-bear-row td { background: rgba(239, 68, 68, 0.14) !important; border-top: 1px solid rgba(239, 68, 68, 0.4); border-bottom: 1px solid rgba(239, 68, 68, 0.4); }
+  tr.skip-row td { opacity: 0.55; background: rgba(239, 68, 68, 0.05) !important; }
+
+  .gate-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--bg-sub); padding: 11px; border-radius: 8px; border: 1px solid var(--border-col); }
+  .score-meter { font-size: 1.08rem; font-weight: 900; padding: 6px 12px; border-radius: 8px; }
+  .status-stack { display: flex; flex-direction: column; gap: 3px; }
+  .micro-events { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
+  .news-item { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; background: var(--bg-sub); padding: 8px 11px; border-radius: 8px; border: 1px solid var(--border-col); margin-top: 6px; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">
+      <h1>₿ CRYPTO ASTRO PRO TERMINAL <span>[BTCUSD &amp; ETHUSD • J-HORA + KP ENGINE]</span></h1>
+      <p>Video Series Decoded: Genesis Kundli • Tithi Pravesha &amp; Ashtottari Dasha Slots • First-Slot Majority Rule • Double-Star Merge Guard • Bollinger(20,2)+100MA Filter</p>
+    </div>
+    <div class="controls" id="assetTabs"></div>
+    <div class="controls">
+      <button class="exch-btn" id="audioToggleBtn" onclick="toggleAudioAlert()">🔕 Sound: OFF</button>
+      <select id="modeSelect" onchange="forceFullRecompute()">
+        <option value="LIVE">🔴 LIVE REAL-TIME (IST)</option>
+        <option value="SIM">🕒 SIMULATE DATE/TIME</option>
+      </select>
+      <input type="date" id="simDate" onchange="forceFullRecompute()" style="display:none;">
+      <input type="time" id="simTime" step="60" onchange="forceFullRecompute()" style="display:none;">
+      <button class="exch-btn" id="themeBtn" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+  </div>
+
+  <!-- LIVE RIBBON -->
+  <div class="ribbon" id="topRibbon"></div>
+
+  <!-- ================= HERO BOX: TITHI ASHTOTTARI DASHA & RULING PLANET SLOTS ================= -->
+  <div class="card combo-hero">
+    <div class="card-title">
+      <span>🪐 TITHI ASHTOTTARI DASHA &amp; RULING PLANET SLOTS (Godzilla / Jugaad Method — Live Countdown)</span>
+      <div class="controls">
+        <span id="nextComboCountdown" class="timer-pill">⏳ Scanning next crypto window...</span>
+        <label style="font-size:0.78rem;"><input type="checkbox" id="onlyRulingChk" checked onchange="renderComboCards()"> Only Today's Ruling Planets</label>
+        <label style="font-size:0.78rem;"><input type="checkbox" id="showPastCombosChk" onchange="renderComboCards()"> Show Past Slots</label>
+      </div>
+    </div>
+    <div class="brief-box" style="border-left-color: #f59e0b; margin-bottom: 12px; font-size:0.84rem;">
+      <b>📌 Video Series Complete Rulebook:</b>
+      (1) <b>Slot #1 = OBSERVE ONLY:</b> Din ke Ruling Planet ke pehle slot mein trade mat lo—dekho ki usme price upar gaya (<b>LONG</b>) ya neeche gira (<b>SHORT</b>).
+      (2) <b>Majority Rule:</b> Pehle 2–3 slots mein jis taraf majority move aaye (2/3 ya 3/3), aage ke slots mein wahi direction lo.
+      (3) <b>Strict Skip:</b> Jab <b>Maha Dasha = Antardasha</b> (Same/Merged Star) ho ya slot duration <b>&lt; 7 min</b> ho, toh trade avoid karein!
+    </div>
+    <div class="combo-grid" id="uniqueComboGrid"></div>
+  </div>
+
+  <!-- 6-POINT CRYPTO CONFLUENCE, FIRST-SLOT TREND & BOLLINGER/100MA VETO GATE -->
+  <div class="card" style="border-left: 4px solid #f59e0b;">
+    <div class="card-title">
+      <span>🧭 6-Point Crypto Astro + Technical Confluence Gate (BTCUSD / ETHUSD)</span>
+      <div class="controls">
+        <span style="font-size:0.78rem; color:var(--text-muted);">1st-Slot Majority Mood:</span>
+        <select id="morningTrendDir" onchange="updateTick()" style="font-weight:700;">
+          <option value="AUTO">🤖 Auto-Detect (KP + Genesis Alignment)</option>
+          <option value="BUY">🟢 Morning Slots = BULLISH (Only LONG)</option>
+          <option value="SELL">🔴 Morning Slots = BEARISH (Only SHORT)</option>
+        </select>
+        <span id="vetoMasterBadge" class="badge b-amber">CHECKING...</span>
+      </div>
+    </div>
+    <div class="veto-grid" id="vetoGrid"></div>
+    <div class="gate-bar">
+      <div id="bullScoreBox" class="score-meter b-green">🟢 LONG: --/10</div>
+      <div id="bearScoreBox" class="score-meter b-red">🔴 SHORT: --/10</div>
+      <div style="flex:1; min-width:250px; font-size:0.84rem;" id="confluenceSummary">Calculating...</div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+        <label style="font-size:0.8rem;" title="1m Chart: Bollinger Bands(20,2) Wide + Price not flat on 100 MA"><input type="checkbox" id="bbConfirm" onchange="updateTick()"> BB(20,2) Wide + 100MA Trend OK?</label>
+        <input type="number" id="accBal" value="5000" style="width:76px;" title="Account Balance ($)" onchange="updateTick()">
+        <input type="number" id="riskPct" value="1.0" step="0.1" style="width:52px;" title="Risk %" onchange="updateTick()">
+        <input type="number" id="slPts" value="250" step="10" style="width:65px;" title="SL Distance ($)" onchange="updateTick()">
+        <span id="lotCalcBadge" class="badge b-green">Qty: --</span>
+        <button class="btn btn-green" onclick="logCurrentTrade()">➕ Log</button>
+        <button class="btn btn-gold" onclick="exportJournalCSV()">📥 CSV (<span id="logCount">0</span>)</button>
+      </div>
+    </div>
+    <div id="journalPreview" style="margin-top:8px; font-size:0.79rem; color:var(--text-muted);"></div>
+  </div>
+
+  <!-- FULL 24-HOUR 5-MINUTE CRYPTO ASHTOTTARI + KP PLACIDUS FLIP MATRIX -->
+  <div class="card" style="border-left: 4px solid var(--accent);">
+    <div class="card-title">
+      <span>⚡ Live 5-Minute Crypto Astro Matrix [Tithi Ashtottari Dasha + Genesis 6th/11th CSL + Ruling Planets]</span>
+      <div class="controls">
+        <select id="flipSessionSelect" onchange="refreshMatrixNow()">
+          <option value="ALL24" selected>🌐 Full 24-Hour Crypto Cycle (00:00 - 23:55 IST)</option>
+          <option value="ASIA">🌏 Asian Crypto Session (05:30 - 13:30 IST)</option>
+          <option value="LONDON">🇬🇧 London Crypto Open (13:30 - 18:30 IST)</option>
+          <option value="NEWYORK">🇺🇸 US / NY Crypto Session (18:30 - 02:30 IST)</option>
+        </select>
+        <label style="font-size:0.78rem; display:flex; align-items:center; gap:5px; background:var(--bg-sub); padding:4px 9px; border-radius:8px; border:1px solid var(--border-col);">
+          <input type="checkbox" id="hideNoiseChk" onchange="refreshMatrixNow()">
+          <span>Hide Consolidation Noise (|Score| &lt;</span>
+          <input type="number" id="noiseThresholdInput" value="10" min="0" step="1" style="width:54px; padding:3px 6px; font-weight:700; text-align:center;" oninput="refreshMatrixNow()" onchange="refreshMatrixNow()">
+          <span>)</span>
+        </label>
+      </div>
+    </div>
+    <div id="majorFlipsBanner" class="brief-box" style="border-left-color: var(--accent); margin-bottom: 10px; font-size:0.84rem;"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>5m Slot (IST)</th>
+            <th>Tithi Ashtottari (MD-AD)</th>
+            <th>Ruling Match</th>
+            <th>Astro Score</th>
+            <th>Long / Short %</th>
+            <th>Genesis 6th / 11th CSL</th>
+            <th>Moon (SL/SSL)</th>
+            <th>Execution Action &amp; Technical Filter Note</th>
+          </tr>
+        </thead>
+        <tbody id="flipTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GENESIS KUNDLI + TITHI PRAVESHA + CRYPTO LIQUIDITY NEWS TRACKER -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span>🧬 Selected Asset Genesis Kundli, SAV Strength &amp; 🌙 Tithi Pravesha Details</span>
+        <span id="tithiTypeBadge" class="badge b-amber">--</span>
+      </div>
+      <div id="genesisDetailBox" class="brief-box" style="border-left-color: #f59e0b; margin-bottom: 9px;"></div>
+      <div id="tithiDetailBox" class="brief-box" style="margin-bottom:0;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📰 Crypto Liquidity Windows &amp; Macro News Tracker (IST)</span>
+        <span style="font-size:0.75rem; color:var(--text-muted);">High-Volume Breakout &amp; Funding Slots</span>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+        <input type="text" id="newsTitle" placeholder="Event (e.g. US CPI / FOMC / ETF Flow / Funding)" style="flex:1; min-width:160px;">
+        <input type="time" id="newsTimeIST" value="19:00">
+        <select id="newsImpact">
+          <option value="HIGH">🔴 High Volatility</option>
+          <option value="MED">🟠 Medium Volatility</option>
+        </select>
+        <button class="btn btn-gold" onclick="addNewsEvent()">+ Add Slot</button>
+      </div>
+      <div id="newsList"></div>
+    </div>
+  </div>
+
+  <!-- RULING PLANETS X-RAY + HINDI STRATEGY BRIEF -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span>🔮 Today's KP Ruling Planets (Aaj Ka Star) &amp; Current Hora X-Ray</span>
+        <span id="horaTimer" class="badge b-amber">--:--</span>
+      </div>
+      <div class="xray-grid" id="horaXrayGrid"></div>
+      <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-top:6px;">
+        3-Layer KP Sub-Lord चेन (चालू होरा / रूलिंग स्टार की स्थिति):
+      </div>
+      <div class="kp-steps" id="kpChainSteps"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>🔥 Live BTCUSD / ETHUSD &amp; Altcoin Correlation Brief (Hindi)</span>
+        <span id="trinityBadge" class="badge">--</span>
+      </div>
+      <div class="brief-box" id="hindiBrief"></div>
+      <div class="grid-3" id="marketImpactCards"></div>
+    </div>
+  </div>
+
+  <!-- PLANETARY POSITIONS + 24 HORA TABLE -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">
+        <span>🪐 Live Transit &amp; Genesis Planetary Positions (Rashi, Dignity, Vakri, NL-SL-SSL)</span>
+        <span id="ayanDisplay" style="font-size:0.76rem; color:var(--text-muted);">KP Ayanamsa</span>
+      </div>
+      <div class="table-wrap" style="max-height:400px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Body</th>
+              <th>Degree</th>
+              <th>Rashi</th>
+              <th>Nakshatra (P)</th>
+              <th>NL-SL-SSL</th>
+              <th>Avastha</th>
+              <th>Status / Ruling</th>
+            </tr>
+          </thead>
+          <tbody id="planetTableBody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px; font-size:0.8rem; background:var(--bg-sub); padding:9px; border-radius:8px; border:1px solid var(--border-col);">
+        <strong>🔭 Active Global Planetary Aspects (Exact Orbs ≤ 2.5°):</strong>
+        <div id="aspectList" style="margin-top:4px; color:var(--accent);">Scanning...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>⏰ 24 Planetary Hora Cycle (IST &amp; UTC — Ruling Star Alignment)</span>
+        <span id="vareshLabel" style="font-size:0.8rem; font-weight:700;"></span>
+      </div>
+      <div class="table-wrap" style="max-height:460px;">
+        <table>
+          <thead>
+            <tr>
+              <th>H#</th>
+              <th>IST Window</th>
+              <th>UTC Window</th>
+              <th>Hora Lord</th>
+              <th>Ruling Match</th>
+              <th>Crypto Impact</th>
+            </tr>
+          </thead>
+          <tbody id="horaTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1-MINUTE EXACT MOON SUB-LORD SHIFT TIMELINE -->
+  <div class="card">
+    <div class="card-title">
+      <span>🌕 1-Minute Exact Moon Sub-Lord Shifts &amp; Scalping Turn Alerts (IST)</span>
+      <span id="moonBannerText" style="font-size:0.8rem; color:var(--accent); font-weight:700;"></span>
+    </div>
+    <div class="table-wrap" style="max-height:300px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Exact Minute (IST)</th>
+            <th>Event Type</th>
+            <th>Moon Nakshatra &amp; Sub-Lord Shift</th>
+            <th>Ruling Planet Sync</th>
+            <th>Directional Bias</th>
+            <th>1m Bollinger(20,2) + 100 MA Execution Note</th>
+          </tr>
+        </thead>
+        <tbody id="moonShiftBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONTHLY CRYPTO MACRO BIAS & FIXED IST TURNING DATES -->
+  <div class="card" style="border-left: 4px solid #f59e0b;">
+    <div class="card-title">
+      <span>📅 Monthly Crypto (BTC/ETH) Macro Bias &amp; Fixed IST Turning Dates</span>
+      <div class="controls">
+        <label style="font-size:0.8rem; color:var(--text-muted);">Select Month:</label>
+        <input type="month" id="monthlyPicker" onchange="renderMonthlyBias()">
+        <span id="monthlyMacroBadge" class="badge b-amber">--</span>
+      </div>
+    </div>
+    <div id="monthlyMacroSummary" class="brief-box" style="border-left-color: #f59e0b; margin-bottom: 10px;"></div>
+    <div class="table-wrap" style="max-height:340px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Fixed Date &amp; Exact Time (IST)</th>
+            <th>Cosmic Event / Ingress</th>
+            <th>Planetary Trigger</th>
+            <th>Crypto Macro Bias</th>
+            <th>Institutional Impact &amp; Trading Strategy (Hindi)</th>
+          </tr>
+        </thead>
+        <tbody id="monthlyEventsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ================= CRYPTO GENESIS CONFIGURATIONS (FROM VIDEOS) =================
+const CRYPTO_ASSETS = {
+  BTCUSD: {
+    code: "BTCUSD",
+    name: "₿ Bitcoin (BTCUSD)",
+    birthUTC: new Date(Date.UTC(2009, 0, 3, 18, 15, 0)), // Genesis block 03 Jan 2009 (12:34:08 Brisbane / 18:15 UTC)
+    birthDisplay: "03 Jan 2009 • 12:34:08 (Brisbane/UTC Baseline) | Delhi/IST Sync",
+    lat: 28.6139, lon: 77.2090, tz: "Asia/Kolkata", // Video Part 3/15: Delhi, India +5:30 sync
+    defaultSL: 250,
+    savScore: 32,
+    numerologyNote: "BTC Genesis Number 3 (Jupiter) & Destiny 6 (Venus) — Strongest in Ju, Ve, Me, Ra periods"
+  },
+  ETHUSD: {
+    code: "ETHUSD",
+    name: "Ξ Ethereum (ETHUSD)",
+    birthUTC: new Date(Date.UTC(2015, 6, 30, 15, 26, 0)), // Ethereum Frontier Launch 30 Jul 2015, London UK
+    birthDisplay: "30 Jul 2015 • 15:26:00 (London, UK / UTC) | Delhi/IST Sync",
+    lat: 51.5074, lon: -0.1278, tz: "Asia/Kolkata",
+    defaultSL: 18,
+    savScore: 30,
+    numerologyNote: "ETH Genesis Number 3 (Jupiter) & Destiny 9 (Mars) — Sharp volatility in Ma, Su, Me, Ve periods"
+  }
+};
+
+let selectedAsset = "BTCUSD";
+let audioEnabled = false;
+let lastChimeEpoch = 0;
+let tradeLogs = JSON.parse(localStorage.getItem("crypto_astro_logs_v1") || "[]");
+let latestSnapshot = {};
+
+let cachedDateKey = "";
+let cachedAssetKey = "";
+let cachedSlots = [];
+let cachedSolar = null;
+let cachedRulingPlanets = null;
+let lastRenderedMonthKey = "";
+
+let newsEvents = [
+  { title: "8-Hour Crypto Funding Rate Reset", timeIST: "05:30", impact: "MED" },
+  { title: "London Crypto Liquidity Open", timeIST: "13:30", impact: "HIGH" },
+  { title: "US Session / Wall Street + ETF Open", timeIST: "19:00", impact: "HIGH" },
+  { title: "Daily Candle Close & Midnight Sweep", timeIST: "05:25", impact: "HIGH" }
+];
+
+const PLANET_FULL = { Su: "सूर्य (Sun)", Mo: "चंद्रमा (Moon)", Ma: "मंगल (Mars)", Me: "बुध (Mercury)", Ju: "गुरु (Jupiter)", Ve: "शुक्र (Venus)", Sa: "शनि (Saturn)", Ra: "राहु (Rahu)", Ke: "केतु (Ketu)", As: "लग्न (Asc)" };
+const PLANET_NAME_EN = { Su: "Sun", Mo: "Moon", Ma: "Mars", Me: "Mercury", Ju: "Jupiter", Ve: "Venus", Sa: "Saturn", Ra: "Rahu", Ke: "Ketu" };
+const RASHIS = [
+  { code: "Ar", hi: "मेष (Aries)", lord: "Ma", tattva: "अग्नि (Fiery)" },
+  { code: "Ta", hi: "वृषभ (Taurus)", lord: "Ve", tattva: "पृथ्वी (Earthy)" },
+  { code: "Ge", hi: "मिथुन (Gemini)", lord: "Me", tattva: "वायु (Airy)" },
+  { code: "Cn", hi: "कर्क (Cancer)", lord: "Mo", tattva: "जल (Watery)" },
+  { code: "Le", hi: "सिंह (Leo)", lord: "Su", tattva: "अग्नि (Fiery)" },
+  { code: "Vi", hi: "कन्या (Virgo)", lord: "Me", tattva: "पृथ्वी (Earthy)" },
+  { code: "Li", hi: "तुला (Libra)", lord: "Ve", tattva: "वायु (Airy)" },
+  { code: "Sc", hi: "वृश्चिक (Scorpio)", lord: "Ma", tattva: "जल (Watery)" },
+  { code: "Sg", hi: "धनु (Sagittarius)", lord: "Ju", tattva: "अग्नि (Fiery)" },
+  { code: "Cp", hi: "मकर (Capricorn)", lord: "Sa", tattva: "पृथ्वी (Earthy)" },
+  { code: "Aq", hi: "कुंभ (Aquarius)", lord: "Sa", tattva: "वायु (Airy)" },
+  { code: "Pi", hi: "मीन (Pisces)", lord: "Ju", tattva: "जल (Watery)" }
+];
+const NAKSHATRAS = [
+  "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
+  "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
+  "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha",
+  "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta",
+  "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
+];
+
+// Vimshottari & Ashtottari Sequences (Jagannatha Hora Tithi Ashtottari Dasha)
+const DASHA_LORDS = ["Ke", "Ve", "Su", "Mo", "Ma", "Ra", "Ju", "Sa", "Me"];
+const DASHA_YEARS = [7, 20, 6, 10, 7, 18, 16, 19, 17];
+const ASHTOTTARI_LORDS = ["Su", "Mo", "Ma", "Me", "Sa", "Ju", "Ra", "Ve"];
+const ASHTOTTARI_YEARS = [6, 15, 8, 17, 10, 19, 12, 21]; // Total = 108 years (scaled to 1 Tithi Day = ~24 hrs)
+
+const HORA_SEQ = ["Su", "Ve", "Me", "Mo", "Sa", "Ju", "Ma"];
+const WEEKDAY_LORDS = ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa"];
+const TITHI_LORDS = ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra"];
+const EXALT = { Su: "Ar", Mo: "Ta", Ma: "Cp", Me: "Vi", Ju: "Cn", Ve: "Pi", Sa: "Li", Ra: "Ta", Ke: "Sc" };
+const DEBIL = { Su: "Li", Mo: "Sc", Ma: "Cn", Me: "Pi", Ju: "Cp", Ve: "Vi", Sa: "Ar", Ra: "Sc", Ke: "Ta" };
+const COMBUST = { Mo: 12, Ma: 17, Me: 14, Ju: 11, Ve: 10, Sa: 15 };
+const MAITRI = { Su: { f: ["Mo", "Ma", "Ju"], e: ["Ve", "Sa"] }, Mo: { f: ["Su", "Me"], e: [] }, Ma: { f: ["Su", "Mo", "Ju"], e: ["Me"] }, Me: { f: ["Su", "Ve"], e: ["Mo"] }, Ju: { f: ["Su", "Mo", "Ma"], e: ["Me", "Ve"] }, Ve: { f: ["Me", "Sa"], e: ["Su", "Mo"] }, Sa: { f: ["Me", "Ve"], e: ["Su", "Mo", "Ma"] } };
+const RAHU_PART = [7, 1, 6, 4, 5, 3, 2], GULIKA_PART = [6, 5, 4, 3, 2, 1, 0];
+const TITHI_NAMES = ["Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima / Amavasya"];
+const TITHI_CLASSES = [
+  { type: "नंदा तिथि (Nanda - Momentum)", impact: "तेज शुरुआत और ट्रेंड फॉलो करने के लिए शुभ।", bias: +3 },
+  { type: "भद्रा तिथि (Bhadra - Range)", impact: "शुरुआती स्पाइक के बाद रेंज में स्थिरता।", bias: +1 },
+  { type: "जया तिथि (Jaya - Breakout)", impact: "मजबूत एकतरफा रैली और बड़े टारगेट के लिए श्रेष्ठ।", bias: +4 },
+  { type: "रिक्ता तिथि (Rikta - Sweep)", impact: "लिक्विडिटी स्वीप और स्टॉप-लॉस हंटिंग का खतरा।", bias: -4 },
+  { type: "पूर्णा तिथि (Purna - Reversal)", impact: "अत्यधिक वोलैटिलिटी और ट्रेंड रिवर्सल की तिथि।", bias: +2 }
+];
+const RAD = Math.PI / 180, DEG = 180 / Math.PI, norm360 = d => ((d % 360) + 360) % 360;
+
+function playChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = "sine"; osc.frequency.setValueAtTime(880, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.18);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.5);
+  } catch (e) {}
+}
+function toggleAudioAlert() {
+  audioEnabled = !audioEnabled;
+  document.getElementById("audioToggleBtn").innerText = audioEnabled ? "🔔 Sound: ON" : "🔕 Sound: OFF";
+  if (audioEnabled) playChime();
+}
+
+function getJulianDay(date) { return date.getTime() / 86400000 + 2440587.5; }
+function getKPAyanamsa(jd) { const T = (jd - 2451545.0) / 36525.0; return 23.8570923 + 1.3969713 * T; }
+
+function solveOrbit(el) {
+  const M = norm360(el.M);
+  let E = M + el.e * DEG * Math.sin(M * RAD) * (1 + el.e * Math.cos(M * RAD));
+  for (let k = 0; k < 5; k++) E = E - (E - el.e * DEG * Math.sin(E * RAD) - M) / (1 - el.e * Math.cos(E * RAD));
+  const x = el.a * (Math.cos(E * RAD) - el.e), y = el.a * Math.sqrt(1 - el.e * el.e) * Math.sin(E * RAD);
+  const r = Math.sqrt(x * x + y * y), v = Math.atan2(y, x) * DEG;
+  const N = el.N * RAD, vw = (v + el.w) * RAD, inc = el.i * RAD;
+  return { xh: r * (Math.cos(N) * Math.cos(vw) - Math.sin(N) * Math.sin(vw) * Math.cos(inc)), yh: r * (Math.sin(N) * Math.cos(vw) + Math.cos(N) * Math.sin(vw) * Math.cos(inc)), r, v };
+}
+
+function calcSiderealPlanets(date) {
+  const jd = getJulianDay(date), d = jd - 2451543.5, ayan = getKPAyanamsa(jd);
+  const wSun = 282.9404 + 4.70935e-5 * d, eSun = 0.016709 - 1.151e-9 * d, MSun = norm360(356.0470 + 0.9856002585 * d);
+  const ESun = MSun + eSun * DEG * Math.sin(MSun * RAD) * (1 + eSun * Math.cos(MSun * RAD));
+  const xv = Math.cos(ESun * RAD) - eSun, yv = Math.sqrt(1 - eSun * eSun) * Math.sin(ESun * RAD);
+  const sunTrop = norm360(Math.atan2(yv, xv) * DEG + wSun), rSun = Math.sqrt(xv * xv + yv * yv);
+  const xs = rSun * Math.cos(sunTrop * RAD), ys = rSun * Math.sin(sunTrop * RAD);
+
+  const lons = { Su: norm360(sunTrop - ayan) };
+  const mEl = { N: 125.1228 - 0.0529538083 * d, i: 5.1454, w: 318.0634 + 0.1643573223 * d, a: 60.2666, e: 0.054900, M: 115.3654 + 13.0649929509 * d };
+  const mH = solveOrbit(mEl), Mm = norm360(mEl.M), Lm = norm360(mEl.N + mEl.w + mH.v), D = norm360(Lm - sunTrop), F = norm360(Lm - mEl.N);
+  const moonTrop = Lm - 1.274 * Math.sin((Mm - 2 * D) * RAD) + 0.658 * Math.sin(2 * D * RAD) - 0.186 * Math.sin(MSun * RAD) - 0.059 * Math.sin((2 * Mm - 2 * D) * RAD) - 0.057 * Math.sin((Mm - 2 * D + MSun) * RAD) + 0.053 * Math.sin((Mm + 2 * D) * RAD) + 0.046 * Math.sin((2 * D - MSun) * RAD) + 0.041 * Math.sin((Mm - MSun) * RAD) - 0.035 * Math.sin(D * RAD) - 0.031 * Math.sin((Mm + MSun) * RAD) - 0.015 * Math.sin((2 * F - 2 * D) * RAD);
+  lons.Mo = norm360(moonTrop - ayan);
+
+  const others = {
+    Me: { N: 48.3313 + 3.24587e-5 * d, i: 7.0047 + 5.00e-8 * d, w: 29.1241 + 1.01444e-5 * d, a: 0.387098, e: 0.205635 + 5.59e-10 * d, M: 168.6562 + 4.0923344368 * d },
+    Ve: { N: 76.6799 + 2.46590e-5 * d, i: 3.3946 + 2.75e-8 * d, w: 54.8910 + 1.38374e-5 * d, a: 0.723330, e: 0.006773 - 1.302e-9 * d, M: 48.0052 + 1.6021302244 * d },
+    Ma: { N: 49.5574 + 2.11081e-5 * d, i: 1.8497 - 1.78e-8 * d, w: 286.5016 + 2.92961e-5 * d, a: 1.523688, e: 0.093405 + 2.516e-9 * d, M: 18.6021 + 0.5240207766 * d },
+    Ju: { N: 100.4542 + 2.76854e-5 * d, i: 1.3030 - 1.557e-7 * d, w: 273.8777 + 1.64505e-5 * d, a: 5.20256, e: 0.048498 + 4.469e-9 * d, M: 19.8950 + 0.0830853001 * d },
+    Sa: { N: 113.6634 + 2.38980e-5 * d, i: 2.4886 - 1.081e-7 * d, w: 339.3939 + 2.97661e-5 * d, a: 9.55475, e: 0.055546 - 9.499e-9 * d, M: 316.9670 + 0.0334442282 * d }
+  };
+  Object.keys(others).forEach(p => {
+    const h = solveOrbit(others[p]);
+    let trop = Math.atan2(h.yh + ys, h.xh + xs) * DEG;
+    if (p === "Ju" || p === "Sa") {
+      const Mj = norm360(others.Ju.M) * RAD, Ms = norm360(others.Sa.M) * RAD;
+      if (p === "Ju") trop += -0.332 * Math.sin(2 * Mj - 5 * Ms - 67.6 * RAD) - 0.056 * Math.sin(2 * Mj - 2 * Ms + 21 * RAD);
+      if (p === "Sa") trop += 0.812 * Math.sin(2 * Mj - 5 * Ms - 67.6 * RAD) - 0.229 * Math.cos(2 * Mj - 4 * Ms - 2 * RAD);
+    }
+    lons[p] = norm360(trop - ayan);
+  });
+  const raTrop = norm360(125.1228 - 0.0529538083 * d);
+  lons.Ra = norm360(raTrop - ayan); lons.Ke = norm360(lons.Ra + 180); lons._ayan = ayan;
+  return lons;
+}
+
+function calcPlacidusCusps(date, lat, lon) {
+  const jd = getJulianDay(date), T = (jd - 2451545.0) / 36525.0, ayan = getKPAyanamsa(jd);
+  const gmst = norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
+  const ramc = norm360(gmst + lon), eps = (23.439291 - 0.0130042 * T) * RAD, latR = lat * RAD;
+  const mcTrop = norm360(Math.atan2(Math.sin(ramc * RAD), Math.cos(ramc * RAD) * Math.cos(eps)) * DEG);
+  const ascTrop = norm360(Math.atan2(Math.cos(ramc * RAD), -Math.sin(ramc * RAD) * Math.cos(eps) - Math.tan(latR) * Math.sin(eps)) * DEG);
+
+  function solvePlacidusHouse(f, isAboveHorizon) {
+    let ra = norm360(ramc + (isAboveHorizon ? f * 90 : 180 - f * 90));
+    for (let iter = 0; iter < 10; iter++) {
+      const lonGuess = Math.atan2(Math.sin(ra * RAD), Math.cos(ra * RAD) * Math.cos(eps));
+      const sinDec = Math.sin(eps) * Math.sin(lonGuess), tanDec = sinDec / Math.sqrt(Math.max(1e-9, 1 - sinDec * sinDec));
+      const ad = Math.asin(Math.max(-0.999, Math.min(0.999, Math.tan(latR) * tanDec))) * DEG;
+      ra = isAboveHorizon ? norm360(ramc + f * (90 + ad)) : norm360(ramc + 180 - f * (90 - ad));
+    }
+    return norm360(Math.atan2(Math.sin(ra * RAD), Math.cos(ra * RAD) * Math.cos(eps)) * DEG);
+  }
+  const h11Trop = solvePlacidusHouse(1 / 3, true), h12Trop = solvePlacidusHouse(2 / 3, true);
+  const h2Trop = solvePlacidusHouse(2 / 3, false), h3Trop = solvePlacidusHouse(1 / 3, false);
+  return { 1: norm360(ascTrop - ayan), 2: norm360(h2Trop - ayan), 3: norm360(h3Trop - ayan), 4: norm360(mcTrop + 180 - ayan), 5: norm360(h11Trop + 180 - ayan), 6: norm360(h12Trop + 180 - ayan), 7: norm360(ascTrop + 180 - ayan), 8: norm360(h2Trop + 180 - ayan), 9: norm360(h3Trop + 180 - ayan), 10: norm360(mcTrop - ayan), 11: norm360(h11Trop - ayan), 12: norm360(h12Trop - ayan) };
+}
+
+function calcAscendant(date, lat, lon) { return calcPlacidusCusps(date, lat, lon)[1]; }
+
+function computeKPSignificators(lons, cusps) {
+  const cuspArr = [cusps[1], cusps[2], cusps[3], cusps[4], cusps[5], cusps[6], cusps[7], cusps[8], cusps[9], cusps[10], cusps[11], cusps[12]];
+  function getHouseOfDeg(deg) {
+    for (let h = 0; h < 12; h++) {
+      const start = cuspArr[h], end = cuspArr[(h + 1) % 12];
+      if (start < end) { if (deg >= start && deg < end) return h + 1; } else { if (deg >= start || deg < end) return h + 1; }
+    }
+    return 1;
+  }
+  const pKeys = ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra", "Ke"], occHouse = {};
+  const ownedHouses = { Su: [], Mo: [], Ma: [], Me: [], Ju: [], Ve: [], Sa: [], Ra: [], Ke: [] };
+  pKeys.forEach(p => { occHouse[p] = getHouseOfDeg(lons[p]); });
+  for (let h = 1; h <= 12; h++) ownedHouses[RASHIS[Math.floor(cusps[h] / 30)].lord].push(h);
+  ["Ra", "Ke"].forEach(node => { ownedHouses[node] = [...ownedHouses[RASHIS[Math.floor(lons[node] / 30)].lord]]; });
+  const sigs = {};
+  pKeys.forEach(p => {
+    const nl = getKPDetails(lons[p]).nl;
+    sigs[p] = Array.from(new Set([occHouse[nl], ...ownedHouses[nl], occHouse[p], ...ownedHouses[p]]));
+  });
+  return sigs;
+}
+
+function getKPDetails(deg) {
+  deg = norm360(deg);
+  const rIdx = Math.floor(deg / 30), rashi = RASHIS[rIdx], degInRashi = deg % 30;
+  const nakSpan = 360 / 27, nakIdx = Math.floor(deg / nakSpan), nlIdx = nakIdx % 9, nl = DASHA_LORDS[nlIdx];
+  const remNak = deg - nakIdx * nakSpan, pada = Math.floor(remNak / (nakSpan / 4)) + 1;
+  let curr = 0, sl = nl, slIdx = nlIdx, slStart = 0, slSpan = nakSpan;
+  for (let i = 0; i < 9; i++) {
+    const idx = (nlIdx + i) % 9, span = (DASHA_YEARS[idx] / 120) * nakSpan;
+    if (remNak >= curr && remNak < curr + span) { sl = DASHA_LORDS[idx]; slIdx = idx; slStart = curr; slSpan = span; break; }
+    curr += span;
+  }
+  const remSl = remNak - slStart;
+  let currSsl = 0, ssl = sl;
+  for (let j = 0; j < 9; j++) {
+    const idx2 = (slIdx + j) % 9, span2 = (DASHA_YEARS[idx2] / 120) * slSpan;
+    if (remSl >= currSsl && remSl < currSsl + span2) { ssl = DASHA_LORDS[idx2]; break; }
+    currSsl += span2;
+  }
+  const avIdx = Math.floor(degInRashi / 6), finalAvIdx = ((rIdx + 1) % 2 === 0) ? (4 - avIdx) : avIdx;
+  const avastha = ["Baal (25%)", "Kumar (50%)", "Yuva (100%)", "Vriddha (20%)", "Mrit (0%)"][Math.max(0, Math.min(4, finalAvIdx))];
+  return { deg, rIdx, rashi, degInRashi, isSandhi: degInRashi >= 29 || degInRashi <= 1, nakIdx, nak: NAKSHATRAS[nakIdx], pada, nl, sl, ssl, avastha };
+}
+
+function fmtDMS(deg) {
+  const d = Math.floor(deg), m = Math.floor((deg - d) * 60), s = Math.floor((((deg - d) * 60) - m) * 60);
+  return `${String(d).padStart(2, '0')}°${String(m).padStart(2, '0')}'${String(s).padStart(2, '0')}"`;
+}
+
+function getSunriseSunsetUTC(dateUTC, lat, lon) {
+  const jd = getJulianDay(dateUTC), n = Math.round(jd - 2451545.0 - 0.0009 - (-lon / 360)), Jstar = 2451545.0 + 0.0009 + (-lon / 360) + n;
+  const M = norm360(357.5291 + 0.98560028 * (Jstar - 2451545.0));
+  const C = 1.9148 * Math.sin(M * RAD) + 0.0200 * Math.sin(2 * M * RAD) + 0.0003 * Math.sin(3 * M * RAD);
+  const lam = norm360(M + C + 180 + 102.9372), Jtransit = Jstar + 0.0053 * Math.sin(M * RAD) - 0.0069 * Math.sin(2 * lam * RAD) - 0.0012;
+  const sinDec = Math.sin(lam * RAD) * Math.sin(23.44 * RAD), cosDec = Math.cos(Math.asin(sinDec));
+  const cosOmega = (Math.sin(-0.5667 * RAD) - Math.sin(lat * RAD) * sinDec) / (Math.cos(lat * RAD) * cosDec);
+  const omega = Math.acos(Math.max(-1, Math.min(1, cosOmega))) * DEG;
+  return { sr: new Date((Jtransit - omega / 360 - 2440587.5) * 86400000), ss: new Date((Jtransit + omega / 360 - 2440587.5) * 86400000) };
+}
+
+function getLocalParts(date, tz) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, weekday: "short" }).formatToParts(date);
+  const map = {}; parts.forEach(p => map[p.type] = p.value);
+  const wdMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  return { year: +map.year, month: +map.month, day: +map.day, hour: (+map.hour) % 24, minute: +map.minute, second: +map.second, weekday: wdMap[map.weekday] !== undefined ? wdMap[map.weekday] : date.getUTCDay() };
+}
+
+function fmtTime(date, tz, withSec = false) { return new Intl.DateTimeFormat("en-IN", { timeZone: tz, hour: "2-digit", minute: "2-digit", ...(withSec ? { second: "2-digit" } : {}), hour12: false }).format(date); }
+function fmtDateShort(date) { return new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", year: "numeric" }).format(date); }
+function fmtDateTimeIST(date) { return new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).format(date); }
+
+function getHoraScheduleForDate(baseDateUTC, cfg) {
+  const locParts = getLocalParts(baseDateUTC, "Asia/Kolkata"), offsetHours = 77.2090 / 15;
+  const approxNoonUTC = new Date(Date.UTC(locParts.year, locParts.month - 1, locParts.day, 12, 0, 0) - offsetHours * 3600000);
+  let { sr, ss } = getSunriseSunsetUTC(approxNoonUTC, 28.6139, 77.2090), effectiveWeekday = locParts.weekday;
+  if (baseDateUTC < sr) { ({ sr, ss } = getSunriseSunsetUTC(new Date(approxNoonUTC.getTime() - 86400000), 28.6139, 77.2090)); effectiveWeekday = (locParts.weekday + 6) % 7; }
+  const { sr: nextSr } = getSunriseSunsetUTC(new Date(sr.getTime() + 86400000), 28.6139, 77.2090);
+  const dayLord = WEEKDAY_LORDS[effectiveWeekday];
+  const startIdx = HORA_SEQ.indexOf(dayLord), dayDur = (ss - sr) / 12, nightDur = (nextSr - ss) / 12;
+  const horas = [];
+  for (let i = 0; i < 24; i++) {
+    const hLord = HORA_SEQ[(startIdx + i) % 7];
+    const st = i < 12 ? new Date(sr.getTime() + dayDur * i) : new Date(ss.getTime() + nightDur * (i - 12));
+    const et = i < 12 ? new Date(sr.getTime() + dayDur * (i + 1)) : new Date(ss.getTime() + nightDur * (i - 11));
+    horas.push({ num: i + 1, hLord, st, et });
+  }
+  return { sr, ss, dayLord, effectiveWeekday, horas };
+}
+
+// ================= TITHI PRAVESHA & TITHI ASHTOTTARI DASHA ENGINE (FROM VIDEOS) =================
+function computeKP_RulingPlanets(now, assetCfg, dayLord) {
+  const lons = calcSiderealPlanets(now);
+  const ascDeg = calcAscendant(now, assetCfg.lat, assetCfg.lon);
+  const ascKP = getKPDetails(ascDeg);
+  const moonKP = getKPDetails(lons.Mo);
+  const rpSet = new Set([dayLord, ascKP.rashi.lord, ascKP.nl, ascKP.sl, moonKP.rashi.lord, moonKP.nl, moonKP.sl]);
+  return {
+    dayLord,
+    ascSignLord: ascKP.rashi.lord,
+    ascStarLord: ascKP.nl,
+    ascSubLord: ascKP.sl,
+    moonSignLord: moonKP.rashi.lord,
+    moonStarLord: moonKP.nl,
+    moonSubLord: moonKP.sl,
+    list: Array.from(rpSet)
+  };
+}
+
+function buildDailyTithiAshtottariSlots(baseNowUTC, assetCfg, rpObj) {
+  // Video Rule: Tithi Pravesha Daily Chart -> Tithi Ashtottari Dasha (64 sub-slots across 24 hours)
+  // Seeded deterministically by Asset Genesis Moon + Current Lunar Tithi Angle so BTC & ETH have distinct exact minute slots!
+  const istParts = getLocalParts(baseNowUTC, "Asia/Kolkata");
+  const dayStartUTC = Date.UTC(istParts.year, istParts.month - 1, istParts.day, 0, 0, 0) - 5.5 * 3600000;
+  const dayEndUTC = dayStartUTC + 24 * 3600000;
+
+  const genesisLons = calcSiderealPlanets(assetCfg.birthUTC);
+  const nowLons = calcSiderealPlanets(new Date(dayStartUTC + 12 * 3600000));
+  const tithiPhase = norm360(nowLons.Mo - nowLons.Su) - norm360(genesisLons.Mo - genesisLons.Su);
+  const phaseFrac = norm360(tithiPhase) / 360;
+
+  // Start offset in the 108-year Ashtottari cycle
+  const startOffsetYears = phaseFrac * 108;
+  let accYears = 0, mdIdx = 0;
+  for (let i = 0; i < 8; i++) {
+    if (startOffsetYears >= accYears && startOffsetYears < accYears + ASHTOTTARI_YEARS[i]) {
+      mdIdx = i;
+      break;
+    }
+    accYears += ASHTOTTARI_YEARS[i];
+  }
+
+  const slots = [];
+  const DAY_MS = 24 * 3600000;
+  // Scale 108 Ashtottari units across 24 hours (with 3 cycles per day for intraday scalping granularity matching J-Hora Tithi Ashtottari)
+  const CYCLE_MS = DAY_MS / 3;
+  let cursorMs = dayStartUTC - ((startOffsetYears - accYears) / 108) * CYCLE_MS;
+  let planetCountMap = {};
+
+  let safety = 0;
+  while (cursorMs < dayEndUTC && safety < 200) {
+    safety++;
+    const mIdx = (mdIdx + safety - 1) % 8;
+    const mdLord = ASHTOTTARI_LORDS[mIdx];
+    const mdDurMs = (ASHTOTTARI_YEARS[mIdx] / 108) * CYCLE_MS;
+
+    for (let j = 0; j < 8; j++) {
+      const aIdx = (mIdx + j) % 8;
+      const adLord = ASHTOTTARI_LORDS[aIdx];
+      const adDurMs = (ASHTOTTARI_YEARS[aIdx] / 108) * mdDurMs;
+      const stMs = cursorMs;
+      const etMs = cursorMs + adDurMs;
+      cursorMs = etMs;
+
+      if (etMs <= dayStartUTC || stMs >= dayEndUTC) continue;
+
+      const clampedStart = Math.max(dayStartUTC, stMs);
+      const clampedEnd = Math.min(dayEndUTC, etMs);
+      const durMins = Math.round((clampedEnd - clampedStart) / 60000);
+      const midTime = new Date((clampedStart + clampedEnd) / 2);
+
+      // Evaluate Astro Direction & Conviction at midpoint
+      const inst = calcInstantCryptoScore(midTime, assetCfg, rpObj);
+      const isSameStarMerge = (mdLord === adLord); // Video Rule: Mars-Mars or Saturn-Saturn = Merge/Consolidation -> SKIP!
+      const isShortSlot = (durMins < 7); // Video Rule: < 5-7 mins slot -> SKIP!
+      const isRulingPlanet = rpObj.list.includes(adLord) || rpObj.list.includes(mdLord);
+
+      if (isRulingPlanet && !isSameStarMerge && !isShortSlot) {
+        planetCountMap[adLord] = (planetCountMap[adLord] || 0) + 1;
+      }
+      const seqNum = (isRulingPlanet && !isSameStarMerge && !isShortSlot) ? planetCountMap[adLord] : 0;
+
+      slots.push({
+        startMs: clampedStart,
+        endMs: clampedEnd,
+        durMins,
+        startStr: fmtTime(new Date(clampedStart), "Asia/Kolkata"),
+        endStr: fmtTime(new Date(clampedEnd), "Asia/Kolkata"),
+        mdLord,
+        adLord,
+        comboCode: `${mdLord}-${adLord}`,
+        isSameStarMerge,
+        isShortSlot,
+        isRulingPlanet,
+        seqNum, // 1 = First Slot (OBSERVE ONLY), 2+ = Actionable Majority Slots
+        score: inst.score,
+        direction: inst.score >= 0 ? "LONG" : "SHORT",
+        absScore: Math.abs(inst.score),
+        sixthCSL: inst.sixthCSL,
+        eleventhCSL: inst.eleventhCSL,
+        moonSSL: inst.moonSSL
+      });
+    }
+  }
+  return slots;
+}
+
+function calcInstantCryptoScore(t, assetCfg, rpObj) {
+  const lons = calcSiderealPlanets(t);
+  const cusps = calcPlacidusCusps(t, assetCfg.lat, assetCfg.lon);
+  const sigsMap = computeKPSignificators(lons, cusps);
+
+  function scorePlanetKP(pCode) {
+    const houses = sigsMap[pCode] || [];
+    let s = 0;
+    if (houses.includes(11)) s += 5.0;
+    if (houses.includes(2)) s += 3.0;
+    if (houses.includes(10)) s += 2.5;
+    if (houses.includes(12)) s -= 5.0;
+    if (houses.includes(8)) s -= 4.5;
+    if (houses.includes(6)) s -= 3.0;
+    const kp = getKPDetails(lons[pCode]);
+    if (EXALT[pCode] === kp.rashi.code) s += 2.0;
+    else if (kp.rashi.lord === pCode) s += 1.0;
+    if (DEBIL[pCode] === kp.rashi.code) s -= 2.0;
+    if (rpObj && rpObj.list.includes(pCode)) s += (s >= 0 ? 1.5 : -1.5); // Ruling Planet amplification
+    return s;
+  }
+
+  const lagnaKP = getKPDetails(cusps[1]);
+  const sixthKP = getKPDetails(cusps[6]);
+  const eleventhKP = getKPDetails(cusps[11]);
+  const moonKP = getKPDetails(lons.Mo);
+
+  const rawScore = (scorePlanetKP(eleventhKP.sl) * 1.2 + scorePlanetKP(eleventhKP.ssl) * 0.6)
+                 + (scorePlanetKP(lagnaKP.sl) * 1.0 + scorePlanetKP(moonKP.sl) * 1.1 + scorePlanetKP(moonKP.ssl) * 0.6)
+                 + (scorePlanetKP(sixthKP.sl) * 0.85);
+  const score = Number((rawScore + 6.5).toFixed(1));
+  return {
+    score,
+    lagnaSL: lagnaKP.sl,
+    lagnaSSL: lagnaKP.ssl,
+    sixthCSL: sixthKP.sl,
+    eleventhCSL: eleventhKP.sl,
+    eleventhSSL: eleventhKP.ssl,
+    moonSL: moonKP.sl,
+    moonSSL: moonKP.ssl,
+    lons
+  };
+}
+
+function formatCountdown(msDiff) {
+  const totalSec = Math.max(0, Math.floor(msDiff / 1000));
+  const hrs = Math.floor(totalSec / 3600);
+  const mins = Math.floor((totalSec % 3600) / 60);
+  const secs = totalSec % 60;
+  if (hrs > 0) return `${hrs}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+  return `${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+}
+
+function renderComboCards(nowMs) {
+  if (!nowMs) nowMs = getEffectiveNow().getTime();
+  const showPast = document.getElementById("showPastCombosChk").checked;
+  const onlyRuling = document.getElementById("onlyRulingChk").checked;
+  const grid = document.getElementById("uniqueComboGrid");
+  const topPill = document.getElementById("nextComboCountdown");
+  const morningOverride = document.getElementById("morningTrendDir").value;
+
+  let nextUpcoming = null;
+  let activeNowSlot = null;
+
+  cachedSlots.forEach(s => {
+    if (onlyRuling && !s.isRulingPlanet && !s.isSameStarMerge) return;
+    if (nowMs >= s.startMs && nowMs <= s.endMs) activeNowSlot = s;
+    else if (s.startMs > nowMs && !nextUpcoming && !s.isSameStarMerge && !s.isShortSlot) nextUpcoming = s;
+  });
+
+  if (activeNowSlot) {
+    topPill.className = "timer-pill live";
+    const statusTxt = activeNowSlot.isSameStarMerge ? "🚫 MERGED STAR SKIP" : (activeNowSlot.seqNum === 1 ? "👁️ SLOT #1 OBSERVE" : `🔥 ${activeNowSlot.direction}`);
+    topPill.innerText = `${statusTxt} (${activeNowSlot.comboCode}) • ${formatCountdown(activeNowSlot.endMs - nowMs)} left`;
+    if (audioEnabled && !activeNowSlot.isSameStarMerge && (Date.now() - lastChimeEpoch > 300000)) { playChime(); lastChimeEpoch = Date.now(); }
+  } else if (nextUpcoming) {
+    topPill.className = "timer-pill";
+    topPill.innerText = `⏳ Next ${selectedAsset} Slot (${nextUpcoming.startStr} | ${nextUpcoming.comboCode}): in ${formatCountdown(nextUpcoming.startMs - nowMs)}`;
+  } else {
+    topPill.className = "timer-pill";
+    topPill.innerText = `✅ Aaj ke selected filter ke slots poore ho chuke hain`;
+  }
+
+  const visible = cachedSlots.filter(s => (showPast || s.endMs >= nowMs) && (!onlyRuling || s.isRulingPlanet || s.isSameStarMerge));
+  if (!visible.length) {
+    grid.innerHTML = `<div class="brief-box" style="margin:0;">Is samay ke baad aaj koi naya Ruling Planet slot pending nahi hai.</div>`;
+    return;
+  }
+
+  grid.innerHTML = visible.map(s => {
+    const isLive = (nowMs >= s.startMs && nowMs <= s.endMs);
+    const isPast = (nowMs > s.endMs);
+    const timerText = isLive
+      ? `🔥 LIVE • ${formatCountdown(s.endMs - nowMs)} left`
+      : (isPast ? `✔️ Completed` : `⏳ Starts in ${formatCountdown(s.startMs - nowMs)}`);
+
+    // Apply Morning Slot Majority Override if user selected BUY or SELL manually
+    const effectiveDir = morningOverride === "BUY" ? "LONG" : (morningOverride === "SELL" ? "SHORT" : s.direction);
+
+    let cardClass = "mega";
+    let topBanner = "";
+    let ruleNote = "";
+
+    if (s.isSameStarMerge) {
+      cardClass = "flop-danger";
+      topBanner = `<span class="badge b-danger-lock">🚫 DOUBLE STAR MERGE (${s.mdLord} = ${s.adLord}) — STRICT SKIP</span>`;
+      ruleNote = `⚠️ <b>Video Rule:</b> Jab Maha Dasha aur Antardasha dono mein <b>${s.mdLord}</b> aa jaye (Casting = Rolling Star), toh market consolidation/sideways rehta hai. Trade avoid karein!`;
+    } else if (s.isShortSlot) {
+      cardClass = "flop-danger";
+      topBanner = `<span class="badge b-danger-lock">⏳ SHORT DURATION (${s.durMins} Mins &lt; 7m) — SKIP SLOT</span>`;
+      ruleNote = `⚠️ <b>Video Rule:</b> 5–7 minute se chhote time slot mein noise aur false breakout zyada hota hai.`;
+    } else if (s.seqNum === 1) {
+      cardClass = "observe-card";
+      topBanner = `<span class="badge b-cyan">👁️ SLOT #1 FOR ${PLANET_NAME_EN[s.adLord].toUpperCase()} — OBSERVE ONLY (NO TRADE)</span>`;
+      ruleNote = `🔍 <b>First-Slot Rule:</b> Is pehle slot mein chart par dekhein ki <b>${selectedAsset}</b> upar gaya ya neeche. Jis taraf move aaye, aage ke slots (#2, #3) mein wahi trade lein!`;
+    } else {
+      cardClass = s.absScore >= 16 ? "sikka-gold" : "mega";
+      const sikkaTag = s.absScore >= 16 ? `<span class="badge b-sikka">🪙 HIGH CONVICTION (${selectedAsset} SLOT #${s.seqNum})</span>` : `<span class="badge b-green">✅ ACTIONABLE SLOT #${s.seqNum}</span>`;
+      topBanner = sikkaTag;
+      ruleNote = `🎯 <b>Execution Rule:</b> 1m chart par <b>Bollinger Bands (20,2)</b> wide ho aur price <b>100 MA</b> se flat na ho, tab <b>${effectiveDir}</b> entry lein aur slot khatam hone se pehle exit karein.`;
+    }
+
+    const dirBadge = effectiveDir === "LONG"
+      ? `<span class="badge b-green">🟢 BIAS: LONG (BUY)</span>`
+      : `<span class="badge b-red">🔴 BIAS: SHORT (SELL)</span>`;
+
+    return `
+      <div class="combo-item ${cardClass} ${isLive ? 'active-now' : ''}" style="${isPast ? 'opacity:0.5;' : ''}">
+        <div class="combo-top">
+          <div>
+            <div style="margin-bottom:4px;">${topBanner}</div>
+            <div class="combo-time">🕒 ${s.startStr} – ${s.endStr} IST <span style="font-size:0.76rem; color:var(--text-muted);">(${s.durMins} mins)</span></div>
+            <div style="margin-top:3px;">${dirBadge} <span class="badge b-amber">Astro Net: ${s.score > 0 ? '+' + s.score : s.score}</span></div>
+          </div>
+          <div class="timer-pill ${isLive ? 'live' : ''}">${timerText}</div>
+        </div>
+        <div class="combo-body">
+          <b>Tithi Ashtottari:</b> <code>MD: ${PLANET_NAME_EN[s.mdLord]} → AD: ${PLANET_NAME_EN[s.adLord]}</code> | <b>Genesis CSL:</b> 6th:${s.sixthCSL} / 11th:${s.eleventhCSL} | <b>Moon SSL:</b> ${s.moonSSL}
+        </div>
+        <div class="hour-guard-box">${ruleNote}</div>
+      </div>`;
+  }).join("");
+}
+
+function manualSessionChange() { refreshMatrixNow(); }
+
+function refreshMatrixNow() {
+  const now = getEffectiveNow();
+  const assetCfg = CRYPTO_ASSETS[selectedAsset];
+  if (!cachedSolar) cachedSolar = getHoraScheduleForDate(now, assetCfg);
+  if (!cachedRulingPlanets) cachedRulingPlanets = computeKP_RulingPlanets(now, assetCfg, cachedSolar.dayLord);
+  renderFlipMatrix5M(now, assetCfg, cachedSolar.horas, cachedRulingPlanets);
+}
+
+function renderFlipMatrix5M(now, assetCfg, horasList, rpObj) {
+  const sess = document.getElementById("flipSessionSelect").value;
+  const hideNoise = document.getElementById("hideNoiseChk").checked;
+  const rawThresh = parseFloat(document.getElementById("noiseThresholdInput").value);
+  const noiseThreshold = isNaN(rawThresh) ? 0 : Math.max(0, rawThresh);
+  const morningOverride = document.getElementById("morningTrendDir").value;
+  const istParts = getLocalParts(now, "Asia/Kolkata");
+
+  let startH = 0, startM = 0, slots = 287;
+  if (sess === "ASIA") { startH = 5; startM = 30; slots = 96; }
+  if (sess === "LONDON") { startH = 13; startM = 30; slots = 60; }
+  if (sess === "NEWYORK") { startH = 18; startM = 30; slots = 96; }
+
+  const baseUTC = Date.UTC(istParts.year, istParts.month - 1, istParts.day, startH, startM, 0) - 5.5 * 3600000;
+  let prevState = null;
+  const rows = [], majorFlips = [];
+
+  for (let i = 0; i <= slots; i++) {
+    const slotMs = baseUTC + i * 5 * 60000;
+    const t = new Date(slotMs);
+    const res = calcInstantCryptoScore(t, assetCfg, rpObj);
+    const score = res.score;
+    const longPct = Math.max(0, Math.min(100, (50 + score * 2.2))).toFixed(1);
+    const shortPct = (100 - parseFloat(longPct)).toFixed(1);
+
+    // Find matching Tithi Ashtottari Dasha slot
+    const dashaSlot = cachedSlots.find(ds => slotMs >= ds.startMs && slotMs < ds.endMs) || { mdLord: "Me", adLord: "Ju", isSameStarMerge: false, isRulingPlanet: false, seqNum: 2 };
+    const isSkip = dashaSlot.isSameStarMerge || dashaSlot.isShortSlot;
+
+    const state = score >= 1.5 ? "LONG" : (score <= -1.5 ? "SHORT" : "CONSOLIDATION");
+    const isFlip = (prevState === "LONG" && state === "SHORT") || (prevState === "SHORT" && state === "LONG");
+
+    if (isFlip && !isSkip) majorFlips.push(`<li><b>${fmtTime(t, "Asia/Kolkata")} IST:</b> ${prevState} → ${state} (${dashaSlot.mdLord}-${dashaSlot.adLord})</li>`);
+    if (hideNoise && Math.abs(score) < noiseThreshold && !isFlip && !dashaSlot.isRulingPlanet) {
+      if (state !== "CONSOLIDATION") prevState = state;
+      continue;
+    }
+
+    let actionBadge = `<span class="badge b-amber">CONSOLIDATION / WAIT</span>`;
+    let rowCls = "";
+
+    if (isSkip) {
+      actionBadge = `<span class="badge b-red">🚫 MERGED/SHORT SLOT — SKIP</span>`;
+      rowCls = "skip-row";
+    } else if (dashaSlot.seqNum === 1 && dashaSlot.isRulingPlanet) {
+      actionBadge = `<span class="badge b-cyan">👁️ SLOT #1 (${dashaSlot.adLord}) — OBSERVE MOOD</span>`;
+    } else {
+      const finalDir = morningOverride === "BUY" ? "LONG" : (morningOverride === "SELL" ? "SHORT" : state);
+      if (finalDir === "LONG") {
+        actionBadge = `<span class="badge b-green">${isFlip ? '🔥 FLIP → ' : ''}🟢 LONG (BB Upper Target)</span>`;
+        if (Math.abs(score) >= 15) rowCls = "rev-bull-row";
+      } else if (finalDir === "SHORT") {
+        actionBadge = `<span class="badge b-red">${isFlip ? '🔥 FLIP → ' : ''}🔴 SHORT (BB Lower Target)</span>`;
+        if (Math.abs(score) >= 15) rowCls = "rev-bear-row";
+      }
+    }
+
+    if (state !== "CONSOLIDATION") prevState = state;
+    const isCurrentSlot = (now.getTime() >= slotMs && now.getTime() < slotMs + 5 * 60000);
+    if (isCurrentSlot) rowCls = "active-row";
+
+    rows.push(`
+      <tr class="${rowCls}">
+        <td><b>${fmtTime(t, "Asia/Kolkata")} IST</b> ${isCurrentSlot ? '👈' : ''}</td>
+        <td><b>${dashaSlot.mdLord} → ${dashaSlot.adLord}</b> ${dashaSlot.isSameStarMerge ? '⚠️' : ''}</td>
+        <td>${dashaSlot.isRulingPlanet ? '<span class="badge b-gold" style="background:#f59e0b;color:#000;">⭐ RULING</span>' : '<span style="color:var(--text-muted);">Transit</span>'}</td>
+        <td style="color:${score >= 0 ? 'var(--green-txt)' : 'var(--red-txt)'}; font-weight:800;">${score > 0 ? '+' + score : score}</td>
+        <td><b>${longPct}% / ${shortPct}%</b></td>
+        <td>6th:<b>${res.sixthCSL}</b> | 11th:<b>${res.eleventhCSL}</b></td>
+        <td><b>${res.moonSL}</b> / <span style="color:var(--accent);">${res.moonSSL}</span></td>
+        <td>${actionBadge}</td>
+      </tr>`);
+  }
+
+  document.getElementById("majorFlipsBanner").innerHTML = majorFlips.length
+    ? `<strong>Exact 5-Min Trend Reversal Flips (${assetCfg.name}):</strong><ul style="margin:4px 0 0 18px; display:flex; flex-wrap:wrap; gap:14px;">${majorFlips.join("")}</ul>`
+    : `<strong>Exact 5-Min Trend Reversal Flips (${assetCfg.name}):</strong> Selected session mein koi major direction flip nahi hai.`;
+  document.getElementById("flipTableBody").innerHTML = rows.join("");
+}
+
+function calcTithiDetails(now, lonsNow) {
+  const diff = norm360(lonsNow.Mo - lonsNow.Su), tithiIdx0 = Math.floor(diff / 12), tithiNum = tithiIdx0 + 1;
+  const paksha = tithiNum <= 15 ? "शुक्ल पक्ष (Shukla)" : "कृष्ण पक्ष (Krishna)", nameIdx = tithiIdx0 % 15;
+  let tName = TITHI_NAMES[nameIdx]; if (tithiNum === 15) tName = "पूर्णिमा (Purnima)"; if (tithiNum === 30) tName = "अमावस्या (Amavasya)";
+  const classObj = TITHI_CLASSES[nameIdx % 5], tLord = TITHI_LORDS[tithiIdx0 % 8];
+
+  const targetDeg = (tithiIdx0 + 1) * 12;
+  let lo = now.getTime(), hi = lo + 30 * 3600000;
+  for (let i = 0; i < 18; i++) {
+    const mid = (lo + hi) / 2, lMid = calcSiderealPlanets(new Date(mid)), dMid = norm360(lMid.Mo - lMid.Su);
+    let delta = targetDeg - dMid; if (delta > 180) delta -= 360; if (delta < -180) delta += 360;
+    if (delta > 0) lo = mid; else hi = mid;
+  }
+  const endTime = new Date((lo + hi) / 2), minsRemaining = (endTime.getTime() - now.getTime()) / 60000;
+  const nextIdx0 = (tithiIdx0 + 1) % 30;
+  let nextName = TITHI_NAMES[nextIdx0 % 15]; if (nextIdx0 + 1 === 15) nextName = "पूर्णिमा (Purnima)"; if (nextIdx0 + 1 === 30) nextName = "अमावस्या (Amavasya)";
+  return { tithiNum, paksha, tName, classObj, tLord, pctDone: ((diff % 12) / 12 * 100).toFixed(1), endTime, minsRemaining, isTithiSandhi: minsRemaining <= 35, nextName };
+}
+
+function calcGlobalAspects(lonsNow) {
+  const keys = ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra"];
+  const aspectDefs = [{ deg: 0, name: "Conjunction (0°)", type: "b-amber" }, { deg: 60, name: "Sextile (60°)", type: "b-green" }, { deg: 90, name: "Square (90°)", type: "b-red" }, { deg: 120, name: "Trine (120°)", type: "b-green" }, { deg: 180, name: "Opposition (180°)", type: "b-red" }];
+  const found = [];
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = i + 1; j < keys.length; j++) {
+      const p1 = keys[i], p2 = keys[j];
+      let diff = Math.abs(lonsNow[p1] - lonsNow[p2]); if (diff > 180) diff = 360 - diff;
+      aspectDefs.forEach(a => { const orb = Math.abs(diff - a.deg); if (orb <= 2.5) found.push(`<span class="badge ${a.type}">${p1} ${a.name} ${p2} (${orb.toFixed(2)}°)</span>`); });
+    }
+  }
+  return found.length ? found.join(" ") : "वर्तमान में कोई सटीक (≤ 2.5° Orb) ग्रह दृष्टि सक्रिय नहीं है।";
+}
+
+function addNewsEvent() {
+  const t = document.getElementById("newsTitle").value.trim(), tm = document.getElementById("newsTimeIST").value, imp = document.getElementById("newsImpact").value;
+  if (!t || !tm) return; newsEvents.push({ title: t, timeIST: tm, impact: imp }); document.getElementById("newsTitle").value = ""; updateTick();
+}
+function removeNewsEvent(idx) { newsEvents.splice(idx, 1); updateTick(); }
+
+function renderNewsTracker(baseDateUTC, assetCfg) {
+  const istParts = getLocalParts(baseDateUTC, "Asia/Kolkata");
+  document.getElementById("newsList").innerHTML = newsEvents.map((ev, idx) => {
+    const [hh, mm] = ev.timeIST.split(":").map(Number);
+    const evUTC = new Date(Date.UTC(istParts.year, istParts.month - 1, istParts.day, hh, mm, 0) - 5.5 * 3600000);
+    const ascKp = getKPDetails(calcAscendant(evUTC, assetCfg.lat, assetCfg.lon));
+    return `<div class="news-item"><div><span class="badge ${ev.impact === 'HIGH' ? 'b-red' : 'b-amber'}">${ev.timeIST} IST</span> <strong>${ev.title}</strong></div><div><span style="color:var(--text-muted);">Active Lagna:</span> <b>${ascKp.rashi.hi}</b> (${ascKp.nl}-${ascKp.sl}) <button onclick="removeNewsEvent(${idx})" style="margin-left:6px; background:none; border:none; color:var(--red-txt); cursor:pointer; font-weight:700;">✕</button></div></div>`;
+  }).join("");
+}
+
+function renderMoonTimeline(now, lonsNow, rpObj) {
+  const mkp = getKPDetails(lonsNow.Mo);
+  const isMoonRP = rpObj.list.includes(mkp.sl);
+  document.getElementById("moonBannerText").innerHTML =
+    `Moon: ${mkp.rashi.hi} (${fmtDMS(mkp.degInRashi)}) | Nak: ${mkp.nak} | NL-SL-SSL: ${mkp.nl}-${mkp.sl}-${mkp.ssl} | ${isMoonRP ? '<span class="badge b-green">⭐ RULING SL ACTIVE</span>' : '<span class="badge b-amber">Transit SL</span>'}`;
+
+  const startMs = Math.floor((now.getTime() - 2 * 3600000) / 60000) * 60000, rows = [];
+  let prevSl = getKPDetails(calcSiderealPlanets(new Date(startMs)).Mo).sl;
+
+  for (let m = 2; m <= 24 * 60; m += 2) {
+    const t = new Date(startMs + m * 60000), kp = getKPDetails(calcSiderealPlanets(t).Mo);
+    if (kp.sl !== prevSl) {
+      const rpMatch = rpObj.list.includes(kp.sl);
+      const isPast = t < now;
+      let biasBadge = `<span class="badge b-amber">SCALP TURN</span>`;
+      if (kp.sl === "Ra" || kp.sl === "Ke") biasBadge = `<span class="badge b-red">⚠️ LIQUIDATION WICK</span>`;
+      else if (rpMatch) biasBadge = `<span class="badge b-green">🔥 RULING STAR BREAKOUT</span>`;
+
+      rows.push(`<tr style="${isPast ? 'opacity:0.55;' : ''}"><td><b>${fmtTime(t, "Asia/Kolkata")} IST</b> ${isPast ? '(Past)' : ''}</td><td><span class="badge b-purple">MOON SL SHIFT</span></td><td><b>${prevSl} → ${kp.sl}</b> (${kp.nak} P${kp.pada})</td><td>${rpMatch ? '<span class="badge b-green">✅ Ruling Match</span>' : 'Standard'}</td><td>${biasBadge}</td><td>1m BB(20,2) band touch + 100 MA slope check karein.</td></tr>`);
+      prevSl = kp.sl;
+    }
+  }
+  document.getElementById("moonShiftBody").innerHTML = rows.join("");
+}
+
+function renderMonthlyBias() {
+  const picker = document.getElementById("monthlyPicker"); if (!picker.value) return;
+  const [yr, mo] = picker.value.split("-").map(Number);
+  const startUTC = Date.UTC(yr, mo - 1, 1, 0, 0, 0) - 5.5 * 3600000, daysInMonth = new Date(yr, mo, 0).getDate(), endUTC = startUTC + daysInMonth * 86400000;
+  let prevP = calcSiderealPlanets(new Date(startUTC)), bullPoints = 0, bearPoints = 0; const events = [];
+
+  for (let ms = startUTC + 14400000; ms <= endUTC; ms += 14400000) {
+    const t = new Date(ms), p = calcSiderealPlanets(t);
+    const suR1 = Math.floor(prevP.Su / 30), suR2 = Math.floor(p.Su / 30);
+    if (suR1 !== suR2) {
+      const rObj = RASHIS[suR2], isBull = ["Ar", "Le", "Sg", "Aq", "Ge"].includes(rObj.code);
+      if (isBull) bullPoints += 3; else bearPoints += 3;
+      events.push({ timeIST: fmtDateTimeIST(t) + " IST", type: "☀️ सूर्य संक्रांति", trigger: `Sun → ${rObj.hi}`, bias: isBull ? `<span class="badge b-green">BULLISH EXPANSION</span>` : `<span class="badge b-red">CORRECTION</span>`, note: `${rObj.tattva} राशि में सूर्य प्रवेश — Crypto में नया ट्रेंड।` });
+    }
+    const d1 = norm360(prevP.Mo - prevP.Su), d2 = norm360(p.Mo - p.Su);
+    if (d1 < 180 && d2 >= 180) { bearPoints += 1; events.push({ timeIST: fmtDateTimeIST(t) + " IST", type: "🌕 पूर्णिमा", trigger: "Moon 180° Sun", bias: `<span class="badge b-purple">SWING HIGH / REVERSAL</span>`, note: "मासिक लिक्विडिटी पीक।" }); }
+    if (d1 > 300 && d2 < 60) { bullPoints += 2; events.push({ timeIST: fmtDateTimeIST(t) + " IST", type: "🌑 अमावस्या", trigger: "Moon 0° Sun", bias: `<span class="badge b-green">NEW TREND</span>`, note: "नया चंद्र चक्र।" }); }
+    const maR1 = Math.floor(prevP.Ma / 30), maR2 = Math.floor(p.Ma / 30);
+    if (maR1 !== maR2) { bullPoints += 2; events.push({ timeIST: fmtDateTimeIST(t) + " IST", type: "🔥 मंगल गोचर", trigger: `Mars → ${RASHIS[maR2].hi}`, bias: `<span class="badge b-amber">HIGH VOLATILITY</span>`, note: "मंगल राशि परिवर्तन — तेज ब्रेकआउट।" }); }
+    prevP = p;
+  }
+
+  const macroBadge = document.getElementById("monthlyMacroBadge"), macroSum = document.getElementById("monthlyMacroSummary");
+  if (bullPoints > bearPoints + 1) { macroBadge.className = "badge b-green"; macroBadge.innerText = `📈 MONTHLY CRYPTO BIAS: BULLISH`; macroSum.innerHTML = `<b>मासिक निष्कर्ष (${picker.value}):</b> इस महीने BTC/ETH में तेजी का पलड़ा भारी है।`; }
+  else if (bearPoints > bullPoints + 1) { macroBadge.className = "badge b-red"; macroBadge.innerText = `📉 MONTHLY CRYPTO BIAS: BEARISH`; macroSum.innerHTML = `<b>मासिक निष्कर्ष (${picker.value}):</b> इस महीने बिकवाली का दबाव अधिक रहेगा।`; }
+  else { macroBadge.className = "badge b-amber"; macroBadge.innerText = `⚖️ MONTHLY CRYPTO BIAS: TWO-WAY`; macroSum.innerHTML = `<b>मासिक निष्कर्ष (${picker.value}):</b> दोनों तरफ के बड़े स्विंग बनेंगे।`; }
+
+  document.getElementById("monthlyEventsBody").innerHTML = events.map(e => `<tr><td><b>${e.timeIST}</b></td><td>${e.type}</td><td><b>${e.trigger}</b></td><td>${e.bias}</td><td>${e.note}</td></tr>`).join("");
+}
+
+function renderJournalSummary() {
+  document.getElementById("logCount").innerText = tradeLogs.length;
+  const el = document.getElementById("journalPreview");
+  if (!tradeLogs.length) { el.innerHTML = "Journal Empty: Jab Ruling Planet ka 2nd/3rd slot + Bollinger Band(20,2) confirm ho, tab <b>➕ Log</b> dabayein."; return; }
+  const last = tradeLogs[tradeLogs.length - 1];
+  el.innerHTML = `<b>Last Logged Trade:</b> ${last.timestampIST} | ${last.asset} | <b>${last.direction}</b> | Slot: ${last.dashaSlot} | Qty: ${last.qty}`;
+}
+
+function logCurrentTrade() {
+  tradeLogs.push({ timestampIST: latestSnapshot.timestampIST, asset: selectedAsset, direction: latestSnapshot.direction, dashaSlot: latestSnapshot.dashaSlot, longScore: latestSnapshot.longScore, shortScore: latestSnapshot.shortScore, bbConfirmed: document.getElementById("bbConfirm").checked ? "YES" : "NO", qty: latestSnapshot.qty, riskUsd: latestSnapshot.riskUsd });
+  localStorage.setItem("crypto_astro_logs_v1", JSON.stringify(tradeLogs));
+  renderJournalSummary();
+  if (audioEnabled) playChime();
+}
+
+function exportJournalCSV() {
+  if (!tradeLogs.length) { alert("Abhi tak koi trade log nahi kiya gaya hai."); return; }
+  const headers = ["Timestamp_IST", "Asset", "Direction", "Dasha_Slot", "Long_Score_10", "Short_Score_10", "BB_100MA_Confirmed", "Position_Qty", "Risk_USD"];
+  const csvRows = [headers.join(",")];
+  tradeLogs.forEach(r => csvRows.push([`"${r.timestampIST}"`, r.asset, r.direction, `"${r.dashaSlot}"`, r.longScore, r.shortScore, r.bbConfirmed, r.qty, r.riskUsd].join(",")));
+  const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = `Crypto_Astro_${selectedAsset}_Journal_${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(url);
+}
+
+function getEffectiveNow() {
+  const mode = document.getElementById("modeSelect").value, simDateEl = document.getElementById("simDate"), simTimeEl = document.getElementById("simTime");
+  if (mode === "SIM") {
+    simDateEl.style.display = "inline-block"; simTimeEl.style.display = "inline-block";
+    if (!simDateEl.value) {
+      const p = getLocalParts(new Date(), "Asia/Kolkata");
+      simDateEl.value = `${p.year}-${String(p.month).padStart(2, '0')}-${String(p.day).padStart(2, '0')}`;
+      simTimeEl.value = `${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`;
+    }
+    const [yy, mm, dd] = simDateEl.value.split("-").map(Number), [hh, mi] = simTimeEl.value.split(":").map(Number);
+    return new Date(Date.UTC(yy, mm - 1, dd, hh, mi, 0) - 5.5 * 3600000);
+  }
+  simDateEl.style.display = "none"; simTimeEl.style.display = "none";
+  return new Date();
+}
+
+function forceFullRecompute() {
+  cachedDateKey = "";
+  document.getElementById("slPts").value = CRYPTO_ASSETS[selectedAsset].defaultSL;
+  updateTick();
+}
+
+function updateTick() {
+  const now = getEffectiveNow();
+  const istParts = getLocalParts(now, "Asia/Kolkata");
+  const dateKey = `${istParts.year}-${istParts.month}-${istParts.day}`;
+  const monthKey = `${istParts.year}-${String(istParts.month).padStart(2, '0')}`;
+
+  if (lastRenderedMonthKey !== monthKey) {
+    document.getElementById("monthlyPicker").value = monthKey;
+    renderMonthlyBias();
+    lastRenderedMonthKey = monthKey;
+  }
+
+  const tabsDiv = document.getElementById("assetTabs"); tabsDiv.innerHTML = "";
+  Object.entries(CRYPTO_ASSETS).forEach(([key, cfg]) => {
+    const btn = document.createElement("button");
+    btn.className = `exch-btn ${selectedAsset === key ? "active" : ""}`;
+    btn.innerHTML = `<span class="dot open"></span> ${cfg.name}`;
+    btn.onclick = () => { selectedAsset = key; forceFullRecompute(); };
+    tabsDiv.appendChild(btn);
+  });
+
+  const assetCfg = CRYPTO_ASSETS[selectedAsset];
+  if (cachedDateKey !== dateKey || cachedAssetKey !== selectedAsset) {
+    cachedSolar = getHoraScheduleForDate(now, assetCfg);
+    cachedRulingPlanets = computeKP_RulingPlanets(now, assetCfg, cachedSolar.dayLord);
+    cachedSlots = buildDailyTithiAshtottariSlots(now, assetCfg, cachedRulingPlanets);
+    cachedDateKey = dateKey;
+    cachedAssetKey = selectedAsset;
+    renderFlipMatrix5M(now, assetCfg, cachedSolar.horas, cachedRulingPlanets);
+  }
+
+  let activeHora = cachedSolar.horas.find(h => now >= h.st && now < h.et) || cachedSolar.horas[0];
+  let nextHora = cachedSolar.horas[cachedSolar.horas.indexOf(activeHora) + 1] || cachedSolar.horas[0];
+  let activeDashaSlot = cachedSlots.find(s => now.getTime() >= s.startMs && now.getTime() <= s.endMs) || cachedSlots[0];
+
+  const minsFromHoraStart = (now - activeHora.st) / 60000, minsToHoraEnd = (activeHora.et - now) / 60000;
+  const inSandhi = (minsFromHoraStart <= 5) || (minsToHoraEnd <= 5);
+  const partDur = (cachedSolar.ss - cachedSolar.sr) / 8;
+  const inRahu = now >= new Date(cachedSolar.sr.getTime() + partDur * RAHU_PART[cachedSolar.effectiveWeekday]) && now <= new Date(cachedSolar.sr.getTime() + partDur * (RAHU_PART[cachedSolar.effectiveWeekday] + 1));
+
+  const nowPrev = new Date(now.getTime() - 3600000);
+  const lonsNow = calcSiderealPlanets(now), lonsPrev = calcSiderealPlanets(nowPrev);
+  const ascKp = getKPDetails(calcAscendant(now, assetCfg.lat, assetCfg.lon));
+  const liveScoreObj = calcInstantCryptoScore(now, assetCfg, cachedRulingPlanets);
+  document.getElementById("ayanDisplay").innerText = `KP Ayanamsa: ${fmtDMS(lonsNow._ayan)}`;
+
+  const planetsMap = {}, bodyOrder = ["As", "Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra", "Ke"];
+  planetsMap.As = { code: "As", kp: ascKp, dignityBadge: `<span class="badge b-amber">Horizon Lagna</span>` };
+  ["Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra", "Ke"].forEach(p => {
+    const kp = getKPDetails(lonsNow[p]);
+    let diff = lonsNow[p] - lonsPrev[p]; if (diff > 180) diff -= 360; if (diff < -180) diff += 360;
+    const isRetro = (diff < 0) || p === "Ra" || p === "Ke", flags = [];
+    if (EXALT[p] === kp.rashi.code) flags.push("UCHHA"); else if (DEBIL[p] === kp.rashi.code) flags.push("NEECH"); else if (kp.rashi.lord === p) flags.push("Swakshetra");
+    if (isRetro && p !== "Ra" && p !== "Ke") flags.push("VAKRI");
+    if (cachedRulingPlanets.list.includes(p)) flags.push("⭐RULING");
+    let badgeType = flags.includes("⭐RULING") ? "b-cyan" : "b-green";
+    if (flags.includes("NEECH")) badgeType = "b-red";
+    planetsMap[p] = { code: p, kp, flags, dignityBadge: flags.length ? `<span class="badge ${badgeType}">${flags.join(" | ")}</span>` : `<span class="badge b-green">Normal</span>` };
+  });
+
+  const tithi = calcTithiDetails(now, lonsNow);
+  document.getElementById("tithiTypeBadge").innerText = tithi.isTithiSandhi ? "⚠️ TITHI SANDHI" : tithi.classObj.type;
+  document.getElementById("tithiTypeBadge").className = tithi.isTithiSandhi ? "badge b-red" : "badge b-amber";
+
+  renderMoonTimeline(now, lonsNow, cachedRulingPlanets);
+
+  const morningOverride = document.getElementById("morningTrendDir").value;
+  let longScore = Math.max(0, Math.min(10, 5.0 + (liveScoreObj.score / 6.0) + (activeDashaSlot.isRulingPlanet ? 1.2 : 0)));
+  let shortScore = Math.max(0, Math.min(10, 5.0 - (liveScoreObj.score / 6.0) + (activeDashaSlot.isRulingPlanet ? 1.2 : 0)));
+  if (morningOverride === "BUY") { longScore = Math.min(10, longScore + 1.8); shortScore = Math.max(0, shortScore - 1.5); }
+  if (morningOverride === "SELL") { shortScore = Math.min(10, shortScore + 1.8); longScore = Math.max(0, longScore - 1.5); }
+
+  const activeDir = morningOverride === "BUY" ? "LONG" : (morningOverride === "SELL" ? "SHORT" : (longScore >= shortScore ? "LONG" : "SHORT"));
+  const activeDirScore = activeDir === "LONG" ? longScore : shortScore;
+
+  document.getElementById("topRibbon").innerHTML = `
+    <div class="rib-box"><div class="rib-lbl">🕒 Live IST &amp; Active Tithi Ashtottari Slot</div><div class="rib-val">${fmtTime(now, "Asia/Kolkata", true)} IST</div><div class="rib-sub">Dasha: <b>${activeDashaSlot.mdLord} → ${activeDashaSlot.adLord}</b> (${activeDashaSlot.startStr}-${activeDashaSlot.endStr})</div></div>
+    <div class="rib-box" style="border-left:3px solid #f59e0b;"><div class="rib-lbl">⭐ Today's Ruling Planets (${selectedAsset})</div><div class="rib-val" style="color:#fbbf24;">${cachedRulingPlanets.list.join(" • ")}</div><div class="rib-sub">Varesh: <b>${cachedSolar.dayLord}</b> | SAV Strength: <b>${assetCfg.savScore}/48</b></div></div>
+    <div class="rib-box"><div class="rib-lbl">📊 Long vs Short Astro Conviction</div><div class="rib-val"><span style="color:var(--green-txt);">🟢 ${longScore.toFixed(1)}</span> vs <span style="color:var(--red-txt);">🔴 ${shortScore.toFixed(1)}</span></div><div class="rib-sub">Net Score: <b>${liveScoreObj.score > 0 ? '+' + liveScoreObj.score : liveScoreObj.score}</b> | Moon SSL: <b>${planetsMap.Mo.kp.ssl}</b></div></div>
+    <div class="rib-box"><div class="rib-lbl">🛡️ Merge &amp; Squeeze Guard</div><div class="rib-val">${activeDashaSlot.isSameStarMerge ? `<span class="badge b-red">🚫 MERGED STAR SKIP</span>` : `<span class="badge b-green">🟢 SLOT VALID (${activeDashaSlot.durMins}m)</span>`}</div><div class="rib-sub">Next Hora (${nextHora.hLord}) in ${formatCountdown(activeHora.et.getTime() - now.getTime())}</div></div>`;
+
+  // 6-Point Crypto Gate
+  const v1 = !activeDashaSlot.isSameStarMerge;
+  const v2 = !activeDashaSlot.isShortSlot;
+  const v3 = activeDashaSlot.isRulingPlanet;
+  const v4 = activeDashaSlot.seqNum !== 1;
+  const v5 = assetCfg.savScore >= 28;
+  const v6 = document.getElementById("bbConfirm").checked;
+
+  document.getElementById("vetoGrid").innerHTML = [
+    { title: "1. Double-Star Merge Check", pass: v1, stat: v1 ? `✅ DISTINCT (${activeDashaSlot.mdLord}≠${activeDashaSlot.adLord})` : `🚫 MERGED (${activeDashaSlot.mdLord}=${activeDashaSlot.adLord})`, desc: "Same planet MD=AD causes consolidation" },
+    { title: "2. Slot Duration Filter", pass: v2, stat: v2 ? `✅ VALID (${activeDashaSlot.durMins} Mins)` : `🚫 TOO SHORT (${activeDashaSlot.durMins}m < 7m)`, desc: "Minimum 7+ minute window required" },
+    { title: "3. KP Ruling Planet Match", pass: v3, stat: v3 ? `✅ RULING STAR ACTIVE` : `⚠️ NON-RULING TRANSIT`, desc: `Today's Stars: ${cachedRulingPlanets.list.join(", ")}` },
+    { title: "4. First-Slot Observation Rule", pass: v4, stat: v4 ? `✅ ACTIONABLE SLOT #${activeDashaSlot.seqNum || 2}` : `👁️ SLOT #1 — OBSERVE ONLY`, desc: "Skip 1st slot to confirm morning trend" },
+    { title: "5. Ashtakavarga (SAV) Strength", pass: v5, stat: `✅ ${assetCfg.savScore} Points (≥ 28)`, desc: "Strong directional trend capacity" },
+    { title: "6. BB(20,2) + 100 MA Filter", pass: v6, stat: v6 ? `✅ BANDS WIDE + TREND OK` : `⏳ CHECK 1M CHART FIRST`, desc: "Avoid narrow Bollinger squeeze" }
+  ].map(v => `<div class="veto-box" style="border-left:3px solid ${v.pass ? '#10b981' : '#ef4444'};"><div class="v-title">${v.title}</div><div class="v-stat" style="color:${v.pass ? 'var(--green-txt)' : 'var(--red-txt)'};">${v.stat}</div><div class="v-desc">${v.desc}</div></div>`).join("");
+
+  document.getElementById("bullScoreBox").innerText = `🟢 LONG: ${longScore.toFixed(1)}/10`;
+  document.getElementById("bearScoreBox").innerText = `🔴 SHORT: ${shortScore.toFixed(1)}/10`;
+
+  const vetoBadge = document.getElementById("vetoMasterBadge");
+  if (!v1 || !v2) {
+    vetoBadge.className = "badge b-red"; vetoBadge.innerText = "🚫 STRICT SKIP (MERGED / SHORT SLOT)";
+  } else if (!v4) {
+    vetoBadge.className = "badge b-cyan"; vetoBadge.innerText = "👁️ SLOT #1 — OBSERVE DIRECTION ONLY";
+  } else if (v3 && v6 && activeDirScore >= 6.0) {
+    vetoBadge.className = "badge b-green"; vetoBadge.innerText = `✅ EXECUTE ${activeDir} (${activeDirScore.toFixed(1)}/10)`;
+  } else {
+    vetoBadge.className = "badge b-amber"; vetoBadge.innerText = "⏳ WAIT BB(20,2) + 100 MA CONFIRMATION";
+  }
+
+  document.getElementById("confluenceSummary").innerHTML = `<b>${assetCfg.name} Active Plan:</b> Dasha <b>${activeDashaSlot.mdLord}-${activeDashaSlot.adLord}</b> (${activeDashaSlot.startStr}–${activeDashaSlot.endStr}) | 1m chart par Bollinger Band touch + 100 MA slope dekhein.`;
+
+  const bal = parseFloat(document.getElementById("accBal").value) || 5000;
+  const rPct = parseFloat(document.getElementById("riskPct").value) || 1.0;
+  const slD = parseFloat(document.getElementById("slPts").value) || assetCfg.defaultSL;
+  const riskUsd = bal * (rPct / 100);
+  const qty = (riskUsd / slD).toFixed(selectedAsset === "BTCUSD" ? 4 : 3);
+  document.getElementById("lotCalcBadge").innerText = `Risk: $${riskUsd.toFixed(0)} | Qty: ${qty} ${selectedAsset === "BTCUSD" ? "BTC" : "ETH"}`;
+
+  // Genesis & Tithi Boxes
+  const genKP = getKPDetails(calcSiderealPlanets(assetCfg.birthUTC).Mo);
+  document.getElementById("genesisDetailBox").innerHTML = `<b>${assetCfg.name} Genesis Data:</b> ${assetCfg.birthDisplay}<br><b>Genesis Moon:</b> ${genKP.rashi.hi} (${genKP.nak} • NL-SL-SSL: ${genKP.nl}-${genKP.sl}-${genKP.ssl}) | <b>Numerology:</b> ${assetCfg.numerologyNote}`;
+  document.getElementById("tithiDetailBox").innerHTML = `<b>वर्तमान तिथि:</b> ${tithi.paksha} — <b>${tithi.tName}</b> (#${tithi.tithiNum}, ${tithi.pctDone}% पूर्ण | स्वामी: ${PLANET_FULL[tithi.tLord]})<br><b>अगली तिथि परिवर्तन (IST):</b> <span style="color:var(--accent); font-weight:700;">${fmtTime(tithi.endTime, "Asia/Kolkata", true)} IST</span> पर <b>${tithi.nextName}</b> लगेगी।`;
+
+  // Hora & Ruling Planet X-Ray
+  const remSec = Math.max(0, Math.floor((activeHora.et - now) / 1000));
+  const hObj = planetsMap[activeHora.hLord];
+  const isHoraRP = cachedRulingPlanets.list.includes(activeHora.hLord);
+  document.getElementById("horaTimer").innerText = `H#${activeHora.num} • ${Math.floor(remSec / 60)}m ${String(remSec % 60).padStart(2, '0')}s शेष`;
+  document.getElementById("horaXrayGrid").innerHTML = `
+    <div class="xray-item"><div class="lbl">चालू होरा स्वामी</div><div class="val" style="color:var(--accent);">${PLANET_FULL[activeHora.hLord]}</div></div>
+    <div class="xray-item"><div class="lbl">KP Ruling Planet Status</div><div class="val">${isHoraRP ? '<span class="badge b-green">⭐ ACTIVE RULING STAR</span>' : '<span class="badge b-amber">Secondary Transit</span>'}</div></div>
+    <div class="xray-item"><div class="lbl">राशि व सटीक डिग्री</div><div class="val">${hObj.kp.rashi.hi} • ${fmtDMS(hObj.kp.degInRashi)}</div></div>
+    <div class="xray-item"><div class="lbl">Dignity &amp; अवस्था</div><div class="val">${hObj.dignityBadge} <span style="font-size:0.74rem;">(${hObj.kp.avastha})</span></div></div>`;
+  document.getElementById("kpChainSteps").innerHTML = [
+    { role: "Nakshatra Lord (NL)", p: planetsMap[hObj.kp.nl] },
+    { role: "Sub-Lord (SL)", p: planetsMap[hObj.kp.sl] },
+    { role: "Sub-Sub-Lord (SSL)", p: planetsMap[hObj.kp.ssl] }
+  ].map(item => `<div class="kp-node"><div class="role">${item.role}</div><div class="pl">${PLANET_FULL[item.p.code]}</div><div class="st">${item.p.kp.rashi.code} (${Math.floor(item.p.kp.degInRashi)}°) • ${item.p.dignityBadge}</div></div>`).join("");
+
+  document.getElementById("trinityBadge").innerText = `Ruling Stars: ${cachedRulingPlanets.list.join("-")}`;
+  document.getElementById("hindiBrief").innerHTML = `<b>Crypto Astro Strategy (${assetCfg.name}):</b> आज के रूलिंग प्लैनेट्स <b>${cachedRulingPlanets.list.join(", ")}</b> हैं। सबसे पहले इन ग्रहों के <b>Slot #1</b> को चार्ट पर ऑब्ज़र्व करें। यदि पहले 2 स्लॉट्स में मार्केट नीचे गिरा है, तो आगे के सभी स्लॉट्स में केवल <b>SHORT</b> ट्रेड लें (और यदि ऊपर गया है तो <b>LONG</b>)। 1-मिनट चार्ट पर Bollinger Bands (20,2) के संकुचित (squeeze) होने पर ट्रेड न लें।`;
+  document.getElementById("marketImpactCards").innerHTML = [
+    { title: "₿ Bitcoin (BTCUSD)", badge: activeDir === "LONG" ? "Bullish Edge" : "Bearish Edge", bType: activeDir === "LONG" ? "b-green" : "b-red", text: `BTC पूरे क्रिप्टो मार्केट का लीडर है। Slot #1 का ट्रेंड कन्फर्म होते ही BTC में सबसे साफ़ मूव मिलता है।` },
+    { title: "Ξ Ethereum (ETHUSD)", badge: "High Beta Scalp", bType: "b-cyan", text: `ETH में Bollinger Band (20,2) के ऊपरी/निचले बैंड टच पर तेज़ स्कैल्पिंग टारगेट मिलते हैं।` },
+    { title: "🪙 Altcoins (SOL/XRP/DOT)", badge: "Follow BTC Only", bType: "b-amber", text: `वीडियो नियम: सभी Altcoins BTC को ही फॉलो करते हैं, इसलिए अलग कुंडली देखने के बजाय BTC के स्लॉट्स पर ही Altcoins ट्रेड करें।` }
+  ].map(c => `<div class="m-card"><h4><span>${c.title}</span><span class="badge ${c.bType}">${c.badge}</span></h4><p>${c.text}</p></div>`).join("");
+
+  document.getElementById("planetTableBody").innerHTML = bodyOrder.map(code => {
+    const obj = planetsMap[code], isH = code === activeHora.hLord;
+    return `<tr class="${isH ? 'active-row' : ''}"><td><b>${code}</b> ${isH ? '👑' : ''}</td><td>${fmtDMS(obj.kp.degInRashi)}</td><td>${obj.kp.rashi.code}</td><td>${obj.kp.nak} (${obj.kp.pada})</td><td><b>${obj.kp.nl}-${obj.kp.sl}-${obj.kp.ssl}</b></td><td>${obj.kp.avastha}</td><td>${obj.dignityBadge}</td></tr>`;
+  }).join("");
+  document.getElementById("aspectList").innerHTML = calcGlobalAspects(lonsNow);
+
+  document.getElementById("vareshLabel").innerText = `वारेश (Day Lord): ${PLANET_FULL[cachedSolar.dayLord]}`;
+  document.getElementById("horaTableBody").innerHTML = cachedSolar.horas.map(h => {
+    const isCurr = now >= h.st && now < h.et;
+    const isRP = cachedRulingPlanets.list.includes(h.hLord);
+    return `<tr class="${isCurr ? 'active-row' : ''}"><td>${isCurr ? '👉 ' : ''}${h.num}</td><td><b>${fmtTime(h.st, "Asia/Kolkata")} - ${fmtTime(h.et, "Asia/Kolkata")}</b></td><td>${fmtTime(h.st, "UTC")} - ${fmtTime(h.et, "UTC")}</td><td><b>${h.hLord}</b></td><td>${isRP ? '<span class="badge b-green">⭐ RULING</span>' : 'Transit'}</td><td>${isRP ? 'High Crypto Momentum' : 'Normal / Follow Dasha'}</td></tr>`;
+  }).join("");
+
+  renderNewsTracker(now, assetCfg);
+  renderComboCards(now.getTime());
+
+  latestSnapshot = {
+    timestampIST: `${fmtDateShort(now)} ${fmtTime(now, "Asia/Kolkata", true)} IST`,
+    direction: activeDir,
+    dashaSlot: `${activeDashaSlot.mdLord}-${activeDashaSlot.adLord}`,
+    longScore: longScore.toFixed(1),
+    shortScore: shortScore.toFixed(1),
+    qty,
+    riskUsd: riskUsd.toFixed(2)
+  };
+  renderJournalSummary();
+}
+
+function toggleTheme() {
+  const html = document.documentElement, btn = document.getElementById("themeBtn");
+  html.setAttribute("data-theme", html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+  btn.innerText = html.getAttribute("data-theme") === "dark" ? "☀️ Light" : "🌙 Dark";
+}
+
+updateTick();
+setInterval(() => { if (document.getElementById("modeSelect").value === "LIVE") updateTick(); }, 1000);
+</script>
+</body>
+</html>
